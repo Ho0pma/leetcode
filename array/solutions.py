@@ -1,5 +1,5 @@
 # 1. Two Sum / Easy
-
+from re import search
 # задача: задается список и target. Нужно найти пары чисел, которые в сумме = target и вывести их индексы.
 # 1) O(n^2)
 # from typing import List
@@ -152,4 +152,132 @@
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
-# 
+
+# 35. Search Insert Position / EASY
+
+# задача: подается упорядоченный массив и target. Если в массиве есть target - вывести его индекс. Если нет - найти
+# место где нужно вставить число в порядке возрастания
+
+# 1)
+# from typing import List
+#
+#
+# class Solution:
+#     def searchInsert(self, nums: List[int], target: int) -> int:
+#         if target in nums:
+#             return nums.index(target)
+#         else:
+#             for i in nums:
+#                 if target < i:
+#                     return nums.index(i)
+#
+#             return len(nums) # если target больше всех в lst
+#
+#
+# s = Solution()
+# print(s.searchInsert([1, 3, 5, 6], 5))
+# print(s.searchInsert([1, 3, 5, 6], 2))
+# print(s.searchInsert([1, 3, 5, 6], 7))
+
+# 2)
+# такой же вар как и выше, только лучше структура, хотя есть блок try, что хуже
+# from typing import List
+#
+#
+# class Solution:
+#     def searchInsert(self, nums: list[int], target: int) -> int:
+#
+#         if target not in nums:
+#             for i in range(len(nums)):
+#                 if target < nums[i]:
+#                     return i
+#
+#         try:
+#             return nums.index(target)
+#         except:
+#             return len(nums)
+#
+# s = Solution()
+# print(s.searchInsert([1, 3, 5, 6], 5))
+# print(s.searchInsert([1, 3, 5, 6], 2))
+# print(s.searchInsert([1, 3, 5, 6], 7))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 66. Plus One / EASY
+
+# задача:
+
+# 1) подается массив из чисел: [1, 2, 3] = 123. Нужно вернуть массив [1, 2, 4] = 124 те + 1
+# from typing import List
+#
+#
+# class Solution:
+#     def plusOne(self, digits: List[int]) -> List[int]:
+#         next_digit = int(''.join(str(i) for i in digits)) + 1
+#         return [int(i) for i in str(next_digit)]
+#
+#
+# s = Solution()
+# print(s.plusOne([1, 2, 3]))
+# print(s.plusOne([4, 3, 2, 1]))
+# print(s.plusOne([9]))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 88. Merge Sorted Array / Easy
+
+# задача: подается два массива и два числа. К примеру: [1, 2, 3, 0, 0] и к нему число m=3
+# это означает, что в массиве 3 числа, оставшиеся нули - пустое место.
+# Нужно склеить эти два массива в один в порядке возрастания и сделать это все в nums1 (те не создавать новый)
+
+# 1)
+# from typing import List
+#
+#
+# class Solution:
+#     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+#         nums1_plus_nums2 = sorted(nums1[:m] + nums2[:n])
+#         nums1[:] = nums1_plus_nums2
+#         print(nums1)
+#
+#
+# s = Solution()
+# s.merge(nums1=[1, 2, 3, 0, 0, 0], m=3, nums2=[2, 5, 6], n=3)
+# s.merge(nums1=[1], m=1, nums2=[], n=0)
+# s.merge(nums1=[0], m=0, nums2=[1], n=1)
+# s.merge(nums1=[-1, 0, 0, 3, 3, 3, 0, 0, 0], m=6, nums2=[1, 2, 2], n=3)
+
+# 2)
+# решение сильно лучше, чем выше
+
+# from typing import List
+#
+#
+# class Solution:
+#     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+#         # указатели, чтобы достучаться до последних элементов в списках
+#         pointer1 = m - 1
+#         pointer2 = n - 1
+#
+#         # благодаря этому указателю идем с конца списка и перезаписываем элементы по очереди
+#         overwrite_pointer = m + n - 1
+#
+#         while pointer2 >= 0:
+#             if pointer1 < 0 or nums2[pointer2] > nums1[pointer1]:
+#                 nums1[overwrite_pointer] = nums2[pointer2]
+#                 pointer2 -= 1
+#             else:
+#                 nums1[overwrite_pointer] = nums1[pointer1]
+#                 pointer1 -= 1
+#
+#             overwrite_pointer -= 1
+#
+#         print(nums1)
+#
+#
+# s = Solution()
+# s.merge(nums1=[1, 2, 3, 0, 0, 0], m=3, nums2=[2, 5, 6], n=3)
+# s.merge(nums1=[1], m=1, nums2=[], n=0)
+# s.merge(nums1=[0], m=0, nums2=[1], n=1)
+# s.merge(nums1=[-1, 0, 0, 3, 3, 3, 0, 0, 0], m=6, nums2=[1, 2, 2], n=3)
