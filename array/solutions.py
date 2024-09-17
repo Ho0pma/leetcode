@@ -1,5 +1,7 @@
 # 1. Two Sum / Easy
 from re import search
+
+
 # задача: задается список и target. Нужно найти пары чисел, которые в сумме = target и вывести их индексы.
 # 1) O(n^2)
 # from typing import List
@@ -281,3 +283,187 @@ from re import search
 # s.merge(nums1=[1], m=1, nums2=[], n=0)
 # s.merge(nums1=[0], m=0, nums2=[1], n=1)
 # s.merge(nums1=[-1, 0, 0, 3, 3, 3, 0, 0, 0], m=6, nums2=[1, 2, 2], n=3)
+#
+# 3)
+# такой же как второй варик, только через цикл for. С while лучше тк меньше итераций
+
+# from typing import List
+#
+#
+# class Solution:
+#     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+#         pointer1 = m - 1
+#         pointer2 = n - 1
+#
+#         overwrite_pointer = m + n - 1
+#
+#         for _ in range(n + m):
+#             if pointer2 < 0:
+#                 break
+#
+#             if pointer1 < 0 or nums2[pointer2] > nums1[pointer1]:
+#                 nums1[overwrite_pointer] = nums2[pointer2]
+#                 pointer2 -= 1
+#             else:
+#                 nums1[overwrite_pointer] = nums1[pointer1]
+#                 pointer1 -= 1
+#
+#             overwrite_pointer -= 1
+#
+#         print(nums1)
+#
+#
+# s = Solution()
+# s.merge(nums1=[1, 2, 3, 0, 0, 0], m=3, nums2=[2, 5, 6], n=3)
+# s.merge(nums1=[1], m=1, nums2=[], n=0)
+# s.merge(nums1=[0], m=0, nums2=[1], n=1)
+# s.merge(nums1=[-1, 0, 0, 3, 3, 3, 0, 0, 0], m=6, nums2=[1, 2, 2], n=3)
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 118. Pascal's Triangle / EASY
+
+# задача: построить треугольник Паскаля.
+# проще всего посмотреть гифку:
+# https://leetcode.com/problems/pascals-triangle/description/?envType=problem-list-v2&envId=array
+# [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]] при n=5. Слева, справа всегда 1. То что между ними суммируется
+
+
+# 1)
+# from typing import List
+#
+#
+# class Solution:
+#     def generate(self, numRows: int) -> List[List[int]]:
+#         if numRows == 0:
+#             return []
+#         if numRows == 1:
+#             return [[1]]
+#
+#         prev_rows = self.generate(numRows - 1)
+#         prev_row = prev_rows[-1]
+#         current_row = [1]
+#
+#         for i in range(1, numRows - 1):
+#             current_row.append(prev_row[i - 1] + prev_row[i])
+#
+#         current_row.append(1)
+#         prev_rows.append(current_row)
+#
+#         return prev_rows
+#
+#
+# s = Solution()
+# print(s.generate(5))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 119. Pascal's Triangle II / EASY
+
+# задача: идея такая же, что и выше. Только теперь чуть по другому начинается
+# Example 2:
+#
+# Input: rowIndex = 0
+# Output: [1]
+# Example 3:
+#
+# Input: rowIndex = 1
+# Output: [1,1]
+
+# 1)
+# from typing import List
+#
+#
+# class Solution:
+#     def getRow(self, rowIndex: int) -> List[int]:
+#         if rowIndex == 0:
+#             return [1]
+#         if rowIndex == 1:
+#             return [1, 1]
+#
+#         row = self.getRow(rowIndex - 1)
+#         prev_row = row
+#         new_row = [1]
+#
+#         for i in range(1, rowIndex):
+#             new_row.append(prev_row[i - 1] + prev_row[i])
+#
+#         new_row.append(1)
+#         row = new_row
+#
+#         return row
+#
+#
+# s = Solution()
+# print(s.getRow(2))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 121. Best Time to Buy and Sell Stock / EASY
+
+# задача: состоит в том, чтобы найти максимальную прибыль, которую можно получить, покупая и продавая акции.
+# Input: prices = [7,1,5,3,6,4]
+# Output: 5
+# Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+# Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+
+# Input: prices = [7,6,4,3,1]
+# Output: 0
+# Explanation: In this case, no transactions are done and the max profit = 0.
+
+# 1)
+# говно подход, работает, но если засунуть 1лям значений - умэр
+# from typing import List
+#
+#
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         profit = 0
+#         for i in range(len(prices)):
+#             for j in range(i + 1, len(prices)):
+#                 print(prices[i], prices[j])
+#                 if prices[j] > prices[i]:
+#                     current_profit = abs(prices[i] - prices[j])
+#                     if current_profit > profit:
+#                         profit = current_profit
+#
+#         return profit
+#
+#
+# s = Solution()
+# print(s.maxProfit([7, 1, 5, 3, 6, 4]))
+# print(s.maxProfit([7, 6, 4, 3, 1]))
+
+
+# 2)
+# Алгоритм Кадане для решения этой задачи (есть в гугл доке)
+# class Solution:
+#     def maxProfit(self, prices):
+#         buy = prices[0]
+#         profit = 0
+#         for i in range(1, len(prices)):
+#             if prices[i] < buy:
+#                 buy = prices[i]
+#             elif prices[i] - buy > profit:
+#                 profit = prices[i] - buy
+#         return profit
+#
+#
+# s = Solution()
+# print(s.maxProfit([7, 1, 5, 3, 6, 4]))
+
+# 3)
+# Просто алгоритм Кадане (базовый) - найти максимальный подмассив
+def kadane(lst):
+    current_sum = lst[0]
+    max_sum = lst[0]
+
+    for i in range(1, len(lst)):
+        current_sum = max(lst[i], current_sum + lst[i])
+        max_sum = max(max_sum, current_sum)
+
+    return max_sum
+
+
+print(kadane([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
+# print(kadane([7, 1, 5, 3, 6, 4, 27, 2]))
