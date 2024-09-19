@@ -1,6 +1,4 @@
 # 1. Two Sum / Easy
-from re import search
-
 
 # задача: задается список и target. Нужно найти пары чисел, которые в сумме = target и вывести их индексы.
 # 1) O(n^2)
@@ -454,16 +452,39 @@ from re import search
 
 # 3)
 # Просто алгоритм Кадане (базовый) - найти максимальный подмассив
-def kadane(lst):
-    current_sum = lst[0]
-    max_sum = lst[0]
-
-    for i in range(1, len(lst)):
-        current_sum = max(lst[i], current_sum + lst[i])
-        max_sum = max(max_sum, current_sum)
-
-    return max_sum
-
-
-print(kadane([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
+# def kadane(lst):
+#     current_sum = lst[0]
+#     max_sum = lst[0]
+#
+#     for i in range(1, len(lst)):
+#         current_sum = max(lst[i], current_sum + lst[i])
+#         max_sum = max(max_sum, current_sum)
+#
+#     return max_sum
+#
+#
+# print(kadane([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
 # print(kadane([7, 1, 5, 3, 6, 4, 27, 2]))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 136. Single Number / EASY
+
+# задача: дан список. Нужно найти в нем значение, которое повторяется 1 раз.
+
+# # 1)
+# from typing import List
+# from collections import Counter
+#
+# class Solution:
+#     def singleNumber(self, nums: List[int]) -> int:
+#         cnt = Counter(nums)
+#         return next(k for k, v in cnt.items() if v == 1)
+#
+#
+# s = Solution()
+# print(s.singleNumber(nums=[2, 2, 1, 1, 4]))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#
