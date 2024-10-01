@@ -1,3 +1,4 @@
+from encodings import search_function
 from typing import List, Optional
 
 
@@ -252,15 +253,217 @@ from typing import List, Optional
 # через два указателя. Указатель i проходит список с 1го элемента и сравниваем с предыдущим
 # если значения равны - идет дальше. Если не равны - перезаписывает значение в массиве по указателю j
 # по заданию сказано, что не важно что остается в конце массива.
-class Solution:
-    def removeDuplicates(self, nums: List[int]) -> int:
-        j = 1
-        for i in range(1, len(nums)):
-            if nums[i] != nums[i - 1]:
-                nums[j] = nums[i]
-                j += 1
-        return j
+# class Solution:
+#     def removeDuplicates(self, nums: List[int]) -> int:
+#         j = 1
+#         for i in range(1, len(nums)):
+#             if nums[i] != nums[i - 1]:
+#                 nums[j] = nums[i]
+#                 j += 1
+#         return j
+#
+# s = Solution()
+# s.removeDuplicates(nums=[1, 1, 2]) # Output: 2, nums = [1,2,_]
+# s.removeDuplicates(nums=[0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4]) # Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
 
-s = Solution()
-s.removeDuplicates(nums=[1, 1, 2]) # Output: 2, nums = [1,2,_]
-s.removeDuplicates(nums=[0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4]) # Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 27. Remove Element / EASY
+
+# задача: задача убрать val из nums IN PLACE и вернуть кол-во элементов != val
+
+# 1)
+# class Solution:
+#     def removeElement(self, nums: list[int], val: int) -> int:
+#         counter = 0
+#         for i in nums:
+#             if i != val:
+#                 nums[counter] = i
+#                 counter += 1
+#
+#         return counter
+#
+#
+# s = Solution()
+# print(s.removeElement(nums=[3, 2, 2, 3], val=3))  # Output: 2, nums = [2,2,_,_]
+# print(s.removeElement(nums=[0, 1, 2, 2, 3, 0, 4, 2], val=2))  # Output: 5, nums = [0,1,4,0,3,_,_,_]
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 28. Find the Index of the First Occurrence in a String / EASY
+
+# задача: найти первое вхождение в строку, если его нет - вернуть -1
+
+# 1) в лоб
+# class Solution:
+#     def strStr(self, haystack: str, needle: str) -> int:
+#         return haystack.find(needle)
+#
+#
+# s = Solution()
+# print(s.strStr(haystack="sadbutsad", needle="sad"))  # Output: 0
+# print(s.strStr(haystack="leetcode", needle="leeto"))  # Output: -1
+
+# 2) это решение лучше только тем, что есть контроль над процессом поиска
+# class Solution:
+#     def strStr(self, haystack: str, needle: str) -> int:
+#         if len(haystack) < len(needle):
+#             return -1
+#
+#         for i in range(len(haystack)):
+#             if haystack[i:i + len(needle)] == needle:
+#                 return i
+#
+#         return -1
+#
+#
+# s = Solution()
+# print(s.strStr(haystack="sadbutsad", needle="sad"))  # Output: 0
+# print(s.strStr(haystack="leetcode", needle="leeto"))  # Output: -1
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 35. Search Insert Position / EASY
+
+# задача: задача либо найти в списке заданный target, либо найти место где его нужно вставить
+# по порядку. Список подается отсортированный
+
+# 1) O(n)
+# class Solution:
+#     def searchInsert(self, nums: List[int], target: int) -> int:
+#         if target in nums:
+#             return nums.index(target)
+#
+#         for i in nums:
+#             if i > target:
+#                 return nums.index(i)
+#
+#         return len(nums)
+#
+#
+# s = Solution()
+# print(s.searchInsert(nums=[1, 3, 5, 6], target=5))  # Output: 2
+# print(s.searchInsert(nums=[1, 3, 5, 6], target=2))  # Output: 1
+# print(s.searchInsert(nums=[1, 3, 5, 6], target=7))  # Output: 4
+
+# 2) O(log n) бинарный поиск
+# class Solution:
+#     def searchInsert(self, nums: List[int], target: int) -> int:
+#         if target in nums:
+#             return nums.index(target)
+#
+#         left = 0
+#         right = len(nums) - 1
+#
+#         while left <= right:
+#             mid = (left + right) // 2
+#
+#             if nums[mid] == target:
+#                 return mid
+#             # если значение по индексу в массиве больше таргета - отметаем все что справа
+#             elif nums[mid] > target:
+#                 right = mid - 1
+#             # иначе отметаем все что слева
+#             else:
+#                 left = mid + 1
+#
+#         return left
+#
+#
+# s = Solution()
+# print(s.searchInsert(nums=[1, 3, 5, 6], target=5))  # Output: 2
+# print(s.searchInsert(nums=[1, 3, 5, 6], target=2))  # Output: 1
+# print(s.searchInsert(nums=[1, 3, 5, 6], target=7))  # Output: 4
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# binary search
+
+# def binary_search(lst, target):
+#     left = 0
+#     right = len(lst) - 1
+#
+#     while left <= right:
+#         mid = (left + right) // 2
+#
+#         if lst[mid] == target:
+#             return mid
+#         if lst[mid] > target:
+#             right = mid - 1
+#         else:
+#             left = mid + 1
+#
+#     return 'Not found'
+#
+#
+# print(binary_search([1, 3, 5, 6], 1))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 58. Length of Last Word
+
+# задача: узнать длину последнего слова в поступаемой строке
+
+# 1) короткое решение, но если будет большая строка - беда
+# class Solution:
+#     def lengthOfLastWord(self, s: str) -> int:
+#         return len(s.split()[-1])
+#
+#
+# s = Solution()
+# print(s.lengthOfLastWord(s="Hello World")) # Output: 5
+# print(s.lengthOfLastWord(s="   fly me   to   the moon  "))  # Output: 4
+# print(s.lengthOfLastWord(s="luffy is still joyboy")) # Output: 6
+
+# 2) Минус - пересоздается строка. Ищем с конца строки до первого пробела, работает быстрее
+# class Solution:
+#     def lengthOfLastWord(self, s: str) -> int:
+#         s = s.strip() # убираем пробелы вначале и в конце
+#         counter = 0
+#         # проходим строку с конца и на скокойничах считаем буковки, проверяя что i != пробел
+#         for i in s[::-1]:
+#             if i != ' ':
+#                 counter += 1
+#             else: break
+#
+#         return counter
+#
+#
+# s = Solution()
+# print(s.lengthOfLastWord(s="Hello World")) # Output: 5
+# print(s.lengthOfLastWord(s="   fly me   to   the moon  "))  # Output: 4
+# print(s.lengthOfLastWord(s="luffy is still joyboy")) # Output: 6
+
+# 3) через два указателя. Скорость такая же, но память лучше, чем во втором варе, тк in place
+# class Solution:
+#     def lengthOfLastWord(self, s: str) -> int:
+#         if s.isspace():
+#             return -1 # 'No words in string'
+#
+#         end = len(s) - 1
+#
+#         # сначала ищем указатель на конец последнего слова в строке
+#         # те это проверка на пробелы в конце
+#         while s[end] == ' ':
+#             end -= 1
+#
+#         # теперь проверяем для нового указателя так же проверяем на буквы
+#         # если буквы - уменьшаем указатель
+#         counter = end
+#         while counter >= 0 and s[counter] != ' ':
+#             counter -= 1
+#
+#         # разница между указателями как раз и будет последнее слово
+#         return end - counter
+#
+#
+# s = Solution()
+# print(s.lengthOfLastWord(s=" ")) # Output: 5
+# print(s.lengthOfLastWord(s="  hi   Hello World  ")) # Output: 5
+# print(s.lengthOfLastWord(s="Hello World")) # Output: 5
+# print(s.lengthOfLastWord(s="   fly me   to   the moon  "))  # Output: 4
+# print(s.lengthOfLastWord(s="luffy is still joyboy")) # Output: 6
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#
