@@ -1,4 +1,6 @@
+from cgitb import reset
 from encodings import search_function
+from math import sqrt, ceil, floor
 from typing import List, Optional
 
 
@@ -318,7 +320,7 @@ from typing import List, Optional
 #
 #
 # s = Solution()
-# print(s.strStr(haystack="sadbutsad", needle="sad"))  # Output: 0
+# print(s.strStr(haystack="butsad", needle="sad"))  # Output: 0
 # print(s.strStr(haystack="leetcode", needle="leeto"))  # Output: -1
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -466,4 +468,100 @@ from typing import List, Optional
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
+# 66. Plus One
+
+# задача: подается массив [1,2,4] нужно прибавить единицу к числу 124, чтобы получился массив [1, 2, 5]
+
+# 1) плохой вар, в лоб
+# class Solution:
+#     def plusOne(self, digits: List[int]) -> List[int]:
+#         digit = ''
+#         for i in digits:
+#             digit += str(i)
 #
+#         result = int(digit) + 1
+#
+#         return [int(i) for i in str(result)]
+#
+#
+# s = Solution()
+# print(s.plusOne(digits=[1, 2, 3])) # Output: [1,2,4]
+# print(s.plusOne(digits=[4, 3, 2, 1])) # Output: [4,3,2,2]
+# print(s.plusOne(digits=[9])) # Output: [1,0]
+
+# 2)
+# class Solution:
+#     def plusOne(self, digits: List[int]) -> List[int]:
+#
+#         # первый вар цикла
+#         for i in range(len(digits) - 1, -1, -1):
+#
+#             if digits[i] + 1 != 10:
+#                 digits[i] += 1
+#                 return digits
+#
+#             digits[i] = 0
+#
+#             if i == 0:
+#                 return [1] + digits
+#
+#         # # второй вар цикла (просто чуть по другому реализовано)
+#         # for i in range(len(digits) - 1, -1, -1):
+#         #     if digits[i] == 9:
+#         #         digits[i] = 0
+#         #     else:
+#         #         digits[i] = digits[i] + 1
+#         #         return digits
+#         #
+#         #     if i == 0:
+#         #         return [1] + digits
+#         #
+#         # return digits
+#
+#
+# s = Solution()
+# print(s.plusOne(digits=[9, 9])) # Output: [1, 0, 0]
+# print(s.plusOne(digits=[9, 0, 9, 0])) # Output: [9, 0, 9, 1]
+# print(s.plusOne(digits=[1, 2, 3])) # Output: [1,2,4]
+# print(s.plusOne(digits=[4, 3, 2, 1])) # Output: [4,3,2,2]
+# print(s.plusOne(digits=[9])) # Output: [1,0]
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 69. Sqrt(x)
+
+# задача:
+
+# 1)
+# class Solution:
+#     def mySqrt(self, x: int) -> int:
+#         return floor(sqrt(x))
+#
+#
+# s = Solution()
+# s.mySqrt(x=4)  # Output: 2
+# s.mySqrt(x=2)  # Output: 2
+
+# 2)
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        if x == 0:
+            return 0
+
+        left, right = 1, x
+
+        while left <= right:
+            mid = left + (right - left) // 2
+            if mid == x // mid:
+                return mid
+            elif mid > x // mid:
+                right = mid - 1
+            else:
+                left = mid + 1
+
+        return right
+
+
+s = Solution()
+print(s.mySqrt(x=4))  # Output: 2
+print(s.mySqrt(x=8))  # Output: 2
