@@ -530,7 +530,7 @@ from typing import List, Optional
 # ----------------------------------------------------------------------------------------------------------------------
 # 69. Sqrt(x)
 
-# задача:
+# задача: найти квадратный корень от числа не используя x**0.5 и округлить полученное число в меньшую сторону
 
 # 1)
 # class Solution:
@@ -543,25 +543,306 @@ from typing import List, Optional
 # s.mySqrt(x=2)  # Output: 2
 
 # 2)
-class Solution:
-    def mySqrt(self, x: int) -> int:
-        if x == 0:
-            return 0
+# class Solution:
+#     def mySqrt(self, x: int) -> int:
+#         if x == 0:
+#             return 0
+#
+#         left, right = 1, x
+#
+#         while left <= right:
+#             mid = left + (right - left) // 2
+#             if mid == x // mid:
+#                 return mid
+#             elif mid > x // mid:
+#                 right = mid - 1
+#             else:
+#                 left = mid + 1
+#
+#         return right
+#
+#
+# s = Solution()
+# print(s.mySqrt(x=4))  # Output: 2
+# print(s.mySqrt(x=8))  # Output: 2
 
-        left, right = 1, x
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 70. Climbing Stairs
 
-        while left <= right:
-            mid = left + (right - left) // 2
-            if mid == x // mid:
-                return mid
-            elif mid > x // mid:
-                right = mid - 1
-            else:
-                left = mid + 1
+# задача: задается кол-во ступенек. Нужно узнать кол-во вариаций как можно забраться наверх, если можно прыгать
+# на каждую ступень или через одну (те 1 шаг = 1 ступень или 1 шаг = 2 ступени)
 
-        return right
+# 1) O(n^2)
+# первый способ - рекурсивно, последовательность Фибоначчи. Нужно представить, что есть n ступеней
+# остается один шаг до вершины (те до вершины может оставаться 1 ступень или 2).
+# значит это n - 1 или n - 2 шагов (случаи когда больше 1 ступени)
+# если n = 1 - одна ступень - остался один шаг
+# если n = 0 - нет ступеней - вы уже на вершине (базовые случаи). При этом случает тоже возвращается
+# один тк сё равно считаешь, что есть один способ "остаться наверху". Этот "способ" — просто не двигаться.
 
+# этот код не пройдет, но имеет место быть
 
-s = Solution()
-print(s.mySqrt(x=4))  # Output: 2
-print(s.mySqrt(x=8))  # Output: 2
+# class Solution:
+#     def climbStairs(self, n: int) -> int:
+#         if n == 0 or n == 1:
+#             return 1
+#         return self.climbStairs(n - 1) + self.climbStairs(n - 2)
+#
+#
+# s = Solution()
+# print(s.climbStairs(n=2))  # Output: 2
+# print(s.climbStairs(n=3))  # Output: 3
+# print(s.climbStairs(n=5))  # Output: 8
+
+# 2) O(n)
+# к рекурсии добавляется мемоизация. Тем самым убирает повторение вариантов используемых рекурсией
+# class Solution:
+#     def climbStairs(self, n: int) -> int:
+#         memo = {}
+#         return self.helper(n, memo)
+#
+#     def helper(self, n: int, memo: dict[int, int]) -> int:
+#         if n == 0 or n == 1:
+#             return 1
+#
+#         # проверяется есть ли результат рекурсии в словаре.
+#         if n not in memo:
+#             # результат рекурсии заносится в словарь
+#             memo[n] = self.helper(n - 1, memo) + self.helper(n - 2, memo)
+#         return memo[n]
+#
+#
+# s = Solution()
+# print(s.climbStairs(n=2))  # Output: 2
+# print(s.climbStairs(n=3))  # Output: 3
+# print(s.climbStairs(n=5))  # Output: 8
+
+# 3) O(n) по скорости и памяти такой же как и второй вар
+# используя динамическое программирование. Создается массив от 0 до n + 1 ступенек.
+# нулевая и первая ступень - есть только одно действие, чтобы добраться до вершины
+# 2 ступень - есть два действия 1 + 1 и 2 + 0 => 2
+# 3 ступень - есть три действия 1 + 1 + 1 / 1 + 2 / 2 + 1 => 3
+# можно заметить, что кол-во вариаций текущей вершины = сумма предыдущей ступени и предпредыдущей
+# в конце возвращаем последний вычисленный элемент
+# class Solution:
+#     def climbStairs(self, n: int) -> int:
+#         if n == 0 or n == 1:
+#             return 1
+#
+#         dp = [0] * (n + 1)
+#         dp[0] = dp[1] = 1
+#
+#         for i in range(2, n + 1):
+#             dp[i] = dp[i - 1] + dp[i - 2]
+#
+#         return dp[n]
+#
+#
+# s = Solution()
+# print(s.climbStairs(n=2))  # Output: 2
+# print(s.climbStairs(n=3))  # Output: 3
+# print(s.climbStairs(n=5))  # Output: 8
+
+# 4) лучший. По скорости O(n), памяти - O(1)
+# улучшение 3го метода. Нет смысла создавать массив для всех вариаций. Можно заметить, что
+# для вычисления dp[i] нам нужно только два значения и собственно сам массив и не нужен.
+# class Solution:
+#     def climbStairs(self, n: int) -> int:
+#         if n == 0 or n == 1:
+#             return 1
+#
+#         prev1, prev2 = 1, 1
+#
+#         for i in range(2, n + 1):
+#             current = prev1 + prev2
+#             prev1, prev2 = current, prev1
+#
+#         return prev1
+#
+#
+# s = Solution()
+# print(s.climbStairs(n=2))  # Output: 2
+# print(s.climbStairs(n=3))  # Output: 3
+# print(s.climbStairs(n=5))  # Output: 8
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 83. Remove Duplicates from Sorted List
+
+# задача: нужно убрать в дубликаты в отсортированном двусвязном списке
+# 1)
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+#
+#
+# class Solution:
+#     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+#         node = head
+#
+#         # проверяем что существует нода и следующая.
+#         # Если не проверять node, то возможен случай обращения к node.next.val те к мб None.val
+#         # что приведет к AttributeError
+#         while node and node.next:
+#             if node.next.val == node.val:
+#                 node.next = node.next.next
+#             else:
+#                 node = node.next
+#
+#         return head
+#
+#
+# list1 = ListNode(1, ListNode(1, ListNode(2)))  # [1, 1, 2]
+# list2 = ListNode(1, ListNode(1, ListNode(2, ListNode(3, ListNode(3)))))  # [1, 1, 2, 3, 3]
+#
+#
+# s = Solution()
+# no_duplicates_lst1 = s.deleteDuplicates(list1)  # Output: [1, 2]
+# no_duplicates_lst2 = s.deleteDuplicates(list2)  # Output: [1, 2, 3]
+#
+# # вывод для первого листа
+# node = no_duplicates_lst1
+# while node:
+#     print(node.val, end=' ')
+#     node = node.next
+#
+# # вывод для второго листа
+# node = no_duplicates_lst2
+# while node:
+#     print(node.val, end=' ')
+#     node = node.next
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 94. Binary Tree Inorder Traversal
+
+# задача: задача вывести дерево путем in-order traversal (обход в глубину)
+# 1) O(n)
+# с использование рекурсии
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#
+#
+# class Solution:
+#     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+#         result_lst = [] # очищаем список перед каждым вызовом
+#
+#         def inorder(node):
+#             if node is None:
+#                 return
+#
+#             inorder(node.left)
+#             result_lst.append(node.val)
+#             inorder(node.right)
+#
+#         inorder(root)
+#
+#         return result_lst
+#
+#
+# root1 = TreeNode(
+#     val=1,
+#     right=TreeNode(
+#         val=2,
+#         left=TreeNode(3)
+#     )
+# )
+#
+# root2 = TreeNode(
+#     val=1,
+#     left=TreeNode(
+#         val=2,
+#         left=TreeNode(val=4),
+#         right=TreeNode(
+#             val=5,
+#             left=TreeNode(6),
+#             right=TreeNode(7),
+#         )
+#
+#     ),
+#     right=TreeNode(
+#         val=3,
+#         right=TreeNode(
+#             val=8,
+#             left=TreeNode(9)
+#         )
+#     )
+# )
+#
+# s = Solution()
+# print(s.inorderTraversal(root1)) # Output: [1, 3, 2]
+# print(s.inorderTraversal(root2))  # Output: [4, 2, 6, 5, 7, 1, 3, 9, 8]
+
+# 2) с использованием стека
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#
+#
+# class Solution:
+#     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+#         result_lst = []
+#         stack = []
+#
+#         while root or stack:
+#             # сначала идем максимально вглубь влево, добавляя значения в стек
+#             while root:
+#                 stack.append(root)
+#                 root = root.left
+#
+#             # как только дошли до конца - высвобождаем значения и переходим
+#             # к правому поддереву
+#             root = stack.pop()
+#             result_lst.append(root.val)
+#
+#             # благодаря этой строчке (если уперлись в самое левую ноду) и дальше None
+#             # не будет заходить во внутренний цикл и будет дальше искать правые поддеревья
+#             root = root.right
+#
+#         return result_lst
+#
+#
+#
+# root1 = TreeNode(
+#     val=1,
+#     right=TreeNode(
+#         val=2,
+#         left=TreeNode(3)
+#     )
+# )
+#
+# root2 = TreeNode(
+#     val=1,
+#     left=TreeNode(
+#         val=2,
+#         left=TreeNode(val=4),
+#         right=TreeNode(
+#             val=5,
+#             left=TreeNode(6),
+#             right=TreeNode(7),
+#         )
+#
+#     ),
+#     right=TreeNode(
+#         val=3,
+#         right=TreeNode(
+#             val=8,
+#             left=TreeNode(9)
+#         )
+#     )
+# )
+#
+# s = Solution()
+# print(s.inorderTraversal(root1)) # Output: [1, 3, 2]
+# print(s.inorderTraversal(root2))  # Output: [4, 2, 6, 5, 7, 1, 3, 9, 8]
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+#
