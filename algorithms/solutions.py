@@ -7,6 +7,13 @@ from typing import List, Optional
 # 1. Two Sum / Easy
 
 # задача: задается список и target. Нужно найти пары чисел, которые в сумме = target и вывести их индексы.
+
+# как решать:
+# нужно создать словарь, в котором будет => значение списка: индекс списка
+# после в цикле по списку искать разницу таргета с текущим значением.
+# если эта разница есть в словаре - значит мы нашли нужную пару чисел
+# проверить что найденный индекс был не равен текущему (те не было составлено число из одного и того же)
+
 # class Solution:
 #     def twoSum(self, nums: List[int], target: int) -> List[int]:
 #         d = {}
@@ -29,6 +36,30 @@ from typing import List, Optional
 # 9. Palindrome Number / Easy
 
 # задача: нужно вычислить является ли число палиндромом
+
+# как решать: вторым варом
+# ввести временную переменную temp
+# текущее число cur (оно будет постепенно расти, с нуля до числа которое задано)
+# идти циклом, пока temp не будет равен нулю.
+# в цикле на каждом шаге вычисляем:
+#   следующую цифру из числа: d = temp % 10
+#   текущее число: cur * 10 + d - из такой формулы постепенно, с конца переписывается число
+#   и temp: temp // 10 - то, что осталось от числа
+
+# пример: x = 121 => temp = x, cur = 0
+# 1. d = 121 % 10 = 1        <-- получили ласт цифру
+# 2. cur = 0 * 10 + d = 1    <-- обновили число, что составляем
+# 3. t = 121 // 10 = 12      <-- вычислили, что осталось от числа без последней цифры
+#
+# 1. d = 12 % 10 = 2         <-- следующая двойка
+# 2. cur = 1 * 10 + 2 = 12   <-- склеили, что получилось
+# 3. t = 12 // 10 = 1        <-- убрали 12 с конца из числа 121 - осталось 1
+#
+# 1. d = 1 % 10 = 1
+# 2. cur = 12 * 10 + 1 = 121 <-- получили число, что было
+# 3. t = 1 // 10 = 0         <-- вышли из цикла
+
+
 # 1) через конверт в строку
 # class Solution:
 #     def isPalindrome(self, x: int) -> bool:
@@ -265,7 +296,7 @@ from typing import List, Optional
 #         return j
 #
 # s = Solution()
-# s.removeDuplicates(nums=[1, 1, 2]) # Output: 2, nums = [1,2,_]
+# print(s.removeDuplicates(nums=[1, 1, 2])) # Output: 2, nums = [1,2,_]
 # s.removeDuplicates(nums=[0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4]) # Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -274,7 +305,7 @@ from typing import List, Optional
 
 # задача: задача убрать val из nums IN PLACE и вернуть кол-во элементов != val
 
-# 1)
+# 1) перезаписывает в nums, оставляет вначале только числа без target (val)
 # class Solution:
 #     def removeElement(self, nums: list[int], val: int) -> int:
 #         counter = 0
@@ -283,12 +314,14 @@ from typing import List, Optional
 #                 nums[counter] = i
 #                 counter += 1
 #
-#         return counter
+#         return nums[:counter] # вывод без target
+#         # return counter
 #
 #
 # s = Solution()
-# print(s.removeElement(nums=[3, 2, 2, 3], val=3))  # Output: 2, nums = [2,2,_,_]
-# print(s.removeElement(nums=[0, 1, 2, 2, 3, 0, 4, 2], val=2))  # Output: 5, nums = [0,1,4,0,3,_,_,_]
+# print(s.removeElement(nums=[3, 2, 2, 3], val=3))  # Output: 2, nums = [2, 2, 2, 3]
+# print(s.removeElement(nums=[3, 2, 1, 2, 3], val=3))  # Output: 2, nums = [2, 1, 2, 2, 3]
+# print(s.removeElement(nums=[0, 1, 2, 2, 3, 0, 4, 2], val=2))  # Output: 5, nums = [0, 1, 3, 0, 4, 0, 4, 2]
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
@@ -338,8 +371,14 @@ from typing import List, Optional
 #
 #         for i in nums:
 #             if i > target:
+#                 # если бы попросили вставить по порядку
+#                 # index = nums.index(i)
+#                 # nums.insert(index, target)
+#                 # return nums
+#
 #                 return nums.index(i)
 #
+#         # если таргет больше всех значений в массиве
 #         return len(nums)
 #
 #
@@ -369,12 +408,15 @@ from typing import List, Optional
 #             else:
 #                 left = mid + 1
 #
+#         # есть случай когда таргет больше всех чисел -> left будет расти и упрется в конец массива
+#         # второй случай - когда ищем куда вставить таргет. Всегда получается так, что left становится
+#         # больше чем right и цикл заканчивается. Left остается на индексе куда нужно вставить число.
 #         return left
 #
 #
 # s = Solution()
 # print(s.searchInsert(nums=[1, 3, 5, 6], target=5))  # Output: 2
-# print(s.searchInsert(nums=[1, 3, 5, 6], target=2))  # Output: 1
+# print(s.searchInsert(nums=[1, 3, 5, 6], target=4))  # Output: 1
 # print(s.searchInsert(nums=[1, 3, 5, 6], target=7))  # Output: 4
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -842,6 +884,291 @@ from typing import List, Optional
 # s = Solution()
 # print(s.inorderTraversal(root1)) # Output: [1, 3, 2]
 # print(s.inorderTraversal(root2))  # Output: [4, 2, 6, 5, 7, 1, 3, 9, 8]
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 100. Same Tree
+
+# задача: задача проверить одинаковые ли деревья
+
+# 1) через цикл и стек
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#
+#
+# class Solution:
+#     def isSameTree(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+#         stack = []
+#
+#         while root1 or root2 or stack:
+#             if root1 and root2:
+#                 if root1.val != root2.val:
+#                     return False
+#
+#                 stack.append((root1, root2))
+#                 root1 = root1.left
+#                 root2 = root2.left
+#
+#             # заходит сюда, если не выполняется условие выше
+#             elif root1 or root2:
+#                 return False
+#
+#             else:
+#                 root1, root2 = stack.pop()
+#                 root1 = root1.right
+#                 root2 = root2.right
+#
+#         return True
+
+# # первый кейс:
+# root1 = TreeNode(
+#     val=1,
+#     left=TreeNode(2),
+#     right=TreeNode(3),
+# )
+# root2 = TreeNode(
+#     val=1,
+#     left=TreeNode(2),
+#     right=TreeNode(3),
+# )
+
+# # второй кейс:
+# root1 = TreeNode(
+#     val=1,
+#     left=TreeNode(2),
+# )
+# root2 = TreeNode(
+#     val=1,
+#     right=TreeNode(2),
+# )
+
+# третий кейс:
+# root1 = TreeNode(
+#     val=1,
+#     left=TreeNode(2),
+#     right=TreeNode(1),
+# )
+# root2 = TreeNode(
+#     val=1,
+#     left=TreeNode(1),
+#     right=TreeNode(2),
+# )
+
+# 4 кейс:
+# root1 = TreeNode(
+#     val=0
+# )
+# root2 = TreeNode()
+#
+# s = Solution()
+# print(s.isSameTree(root1, root2))
+
+# 2) через рекурсию
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#
+#
+# class Solution:
+#     def isSameTree(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+#         if not root1 and not root2:
+#             return True
+#         if not root1 or not root2:
+#             return False
+#
+#         if root1.val == root2.val:
+#             return self.isSameTree(root1.left, root2.left) and self.isSameTree(root1.right, root2.right)
+#
+#         return False
+#
+# первый кейс:
+# root1 = TreeNode(
+#     val=1,
+#     left=TreeNode(2),
+#     right=TreeNode(3),
+# )
+# root2 = TreeNode(
+#     val=1,
+#     left=TreeNode(2),
+#     right=TreeNode(3),
+# )
+
+# третий кейс:
+# root1 = TreeNode(
+#     val=1,
+#     left=TreeNode(2),
+#     right=TreeNode(1),
+# )
+# root2 = TreeNode(
+#     val=1,
+#     left=TreeNode(1),
+#     right=TreeNode(2),
+# )
+#
+# s = Solution()
+# print(s.isSameTree(root1, root2))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 101. Symmetric Tree
+
+# задача: проверить симметрично ли дерево
+
+# 1)
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#
+# class Solution:
+#     def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+#         if not root:
+#             return True
+#
+#         def isMirror(t1, t2):
+#             # базовые проверки существуют ли узлы
+#             if not t1 and not t2:
+#                 return True
+#             if not t1 or not t2:
+#                 return False
+#
+#             # от корня идем в разные направления и проверяем их между собой. Лучше нарисовать, сразу понятно
+#             return (t1.val == t2.val) and isMirror(t1.left, t2.right) and isMirror(t1.right, t2.left)
+#
+#         return isMirror(root.left, root.right)
+#
+# первый кейс
+# root = TreeNode(
+#     val=1,
+#     left=TreeNode(
+#         val=2,
+#         left=TreeNode(3),
+#         right=TreeNode(4),
+#     ),
+#     right=TreeNode(
+#         val=2,
+#         left=TreeNode(4),
+#         right=TreeNode(3),
+#     )
+# )
+
+# второй кейс
+# root = TreeNode(
+#     val=1,
+#     left=TreeNode(
+#         val=2,
+#         right=TreeNode(3)
+#     ),
+#     right=TreeNode(
+#         val=2,
+#         right=TreeNode(3)
+#     )
+# )
+#
+# третий кейс
+# root = TreeNode(
+#     val=1,
+#     left=TreeNode(
+#         val=2,
+#         left=TreeNode(2)
+#     ),
+#     right=TreeNode(
+#         val=2,
+#         left=TreeNode(2)
+#     )
+# )
+# s = Solution()
+# print(s.isSymmetric(root))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 104. Maximum Depth of Binary Tree
+
+# задача: нужно посчитать максимальную глубину дерева
+
+# 1)
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#
+#
+# class Solution:
+#     def maxDepth(self, root: Optional[TreeNode]) -> int:
+#         if not root:
+#             return 0
+#
+#         left_depth = self.maxDepth(root.left)
+#         right_depth = self.maxDepth(root.right)
+#
+#         return 1 + max(left_depth, right_depth)
+#
+#
+# root = TreeNode(
+#     val=3,
+#     left=TreeNode(9),
+#     right=TreeNode(
+#         val=20,
+#         left=TreeNode(15),
+#         right=TreeNode(7),
+#     )
+# )
+#
+# s = Solution()
+# print(s.maxDepth(root))
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 108. Convert Sorted Array to Binary Search Tree
+
+# задача: нужно создать BST по поступаемому отсортированному массиву
+
+# 1)
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#
+#
+# class Solution:
+#     def sortedArrayToBST(self, nums: List[int]) -> Optional[TreeNode]:
+#         if not nums:
+#             return None
+#
+#         mid = len(nums) // 2
+#         root = TreeNode(nums[mid])
+#
+#         # нашли центр массива, сохраняем его как ноду
+#         # от ноды разбиваем массив на две части
+#         # так делаем до тех пор, пока есть nums
+#         root.left = self.sortedArrayToBST(nums[:mid])
+#         root.right = self.sortedArrayToBST(nums[mid + 1:])
+#
+#         return root
+#
+#
+# s = Solution()
+# root = s.sortedArrayToBST(nums=[-10, -3, 0, 5, 9])  # Output: [0,-3,9,-10,null,5] or [0,-10,5,null,-3,null,9]
+#
+# # для проверки
+# def bfs(root):
+#     if not root:
+#         return
+#
+#     bfs(root.left)
+#     print(root.val, end=' ')
+#     bfs(root.right)
+#
+#
+# bfs(root)  # output: [-10, -3, 0, 5, 9] те равно тому что задали
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
