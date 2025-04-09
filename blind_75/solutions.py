@@ -60,4 +60,76 @@ from typing import List
 
 ########################################################################################################################
 
-# # 2.
+# # 2. 1. Two Sum
+# 1) Brute force  Time: O(n^2) | Space: O(1)
+# class Solution:
+#     def twoSum(self, nums: List[int], target: int) -> List[int]:
+#         # в первом цикле идет по всем элементам nums (от 0, до конца)
+#         # во втором цикле идет по элементам nums, но уже с i + 1 до конца. Чтобы избежать повторных проверок и не
+#         # попадались одинаковые элементы i и j.
+#         # к примеру:
+#         # i = 0 -> элемент = 2 -> пары: [2 и 7, 2 и 11, 2 и 15]
+#         # i = 1 -> элемент = 7 -> пары: [7 и 11, 7 и 15, и могла быть 7 и 2, что уже была выше, если рассматривать все]
+#         # далее просто ищем верное равенство 2 (i) = 9 (target) - 7 (j) и выводим
+#         # если не нашло - вывод пустого списка
+#         for i in range(len(nums)):
+#             for j in range(i + 1, len(nums)):
+#                 if nums[j] == target - nums[i]:
+#                     return [i, j]
+#         return []
+#
+#
+# s = Solution()
+# print(s.twoSum(nums=[2, 7, 11, 15], target=9)) # [0, 1]
+# print(s.twoSum(nums=[3, 2, 4], target=6)) # [1, 2]
+# print(s.twoSum(nums=[3, 3], target=6)) # [0, 1]
+
+# 2) Two-pass Hash Table Time: O(n) | Space: O(n)
+# class Solution:
+#     def twoSum(self, nums: List[int], target: int) -> List[int]:
+#         # создается хэш таблица - дикт, в который через цикл заносятся значения и индексы из поступающего массива
+#         # пример: hashmap = {2: 0, 7: 1, 11: 2, 15: 3} те значение из nums (ключ): индекс из nums (значение)
+#         # далее, во втором цикле на каждом шаге мы вычисляем complement и проверяем есть ли такой ключ в хэш таблице.
+#         # если есть и значение этого ключа (индекс из nums) != текущему индексу в цикле (чтобы не брались одинаковые
+#         # индексы) - выводим полученные индексы
+#         hashmap = {}
+#
+#         for i in range(len(nums)):
+#             hashmap[nums[i]] = i
+#         for i in range(len(nums)):
+#             complement = target - nums[i]
+#             if complement in hashmap and hashmap[complement] != i:
+#                 return [i, hashmap[complement]]
+#
+#         return []
+#
+#
+# s = Solution()
+# print(s.twoSum(nums=[2, 7, 11, 15], target=9)) # [0, 1]
+# print(s.twoSum(nums=[3, 2, 4], target=6)) # [1, 2]
+# print(s.twoSum(nums=[3, 3], target=6)) # [0, 1]
+
+# 3) One-pass Hash Table Time: O(n) | Space: O(n)
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # тут идея в том, что мы делаем проверку что и в предыдущем варе только сразу
+        # на моменте создания хэш таблицы.
+        # пример: nums [2, 7, 11, 15]
+        # при первом проходе: i=0, complement = 7, такого нет в хэш таблице, значит
+        # заносится {2(значение): 0(индекс)}.
+        # второй: i=1, complement = 2 - в хэш таблице есть - выводим
+        # И главное еще тут не нужна проверка на одинаковость индексов. Они точно не могут
+        # быть равны тк i постоянно растет и в кэш таблицу заносятся всегда разные i.
+        hashtable = {}
+        for i in range(len(nums)):
+            complement = target - nums[i]
+            if complement in hashtable:
+                return [i, hashtable[complement]]
+            hashtable[nums[i]] = i
+        return []
+
+
+s = Solution()
+print(s.twoSum(nums=[2, 7, 11, 15], target=9)) # [0, 1]
+print(s.twoSum(nums=[3, 2, 4], target=6)) # [1, 2]
+print(s.twoSum(nums=[3, 3], target=6)) # [0, 1]
