@@ -110,26 +110,110 @@ from typing import List
 # print(s.twoSum(nums=[3, 3], target=6)) # [0, 1]
 
 # 3) One-pass Hash Table Time: O(n) | Space: O(n)
+# class Solution:
+#     def twoSum(self, nums: List[int], target: int) -> List[int]:
+#         # тут идея в том, что мы делаем проверку что и в предыдущем варе только сразу
+#         # на моменте создания хэш таблицы.
+#         # пример: nums [2, 7, 11, 15]
+#         # при первом проходе: i=0, complement = 7, такого нет в хэш таблице, значит
+#         # заносится {2(значение): 0(индекс)}.
+#         # второй: i=1, complement = 2 - в хэш таблице есть - выводим
+#         # И главное еще тут не нужна проверка на одинаковость индексов. Они точно не могут
+#         # быть равны тк i постоянно растет и в кэш таблицу заносятся всегда разные i.
+#         hashtable = {}
+#         for i in range(len(nums)):
+#             complement = target - nums[i]
+#             if complement in hashtable:
+#                 return [i, hashtable[complement]]
+#             hashtable[nums[i]] = i
+#         return []
+#
+#
+# s = Solution()
+# print(s.twoSum(nums=[2, 7, 11, 15], target=9)) # [0, 1]
+# print(s.twoSum(nums=[3, 2, 4], target=6)) # [1, 2]
+# print(s.twoSum(nums=[3, 3], target=6)) # [0, 1]
+
+########################################################################################################################
+
+# # 3 3. Longest Substring Without Repeating Characters
+
+# Задача:подается строка,
+# нужно найти в ней самую длинную последовательность неповторяющихся символов идущих по порядку.
+
+# Time: O(n^2) | Space: O(n). Есть лучше, за O(n) - алгоритм Мангера или как то так
+# class Solution:
+#     def lengthOfLongestSubstring(self, s: str) -> int:
+#         # задаем указатели left и right - это наше sliding window
+#         # создаем пустой сет в который будем заносить символы
+#         # задаем счеткик max_length
+#         # далее итерируемся по нашей строке (по индексам)
+#         # если текущего символа нет в сете - двигаем указатель right и вычисляем max_length
+#         # max_length вычисляется путем сравнивания max_length и right - left + 1. +1 тк индексация идет с 0
+#         # если текущий символ есть в сете - циклом двигаем left и удаляем из сета значение s[left]
+#         # таким образом в сете остается всегда комбинация уникальных символов, идущих друг за другом
+#         left = 0
+#         max_length = 0
+#         char_set = set()
+#
+#         for right in range(len(s)):
+#             while s[right] in char_set:
+#                 char_set.remove(s[left])
+#                 left += 1
+#             char_set.add(s[right])
+#             max_length = max(max_length, right - left + 1)
+#
+#         return max_length
+#
+#
+# s = Solution()
+# print(s.lengthOfLongestSubstring(s="abcabcbb")) # 3
+# print(s.lengthOfLongestSubstring(s="bbbbb")) # 1
+# print(s.lengthOfLongestSubstring(s="pwwkew")) # 3
+
+########################################################################################################################
+
+# # 4 5. Longest Palindromic Substring
+
+# Задача: подается строка, нужно найти в ней палиндром максимальной длины.
+
 class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        # тут идея в том, что мы делаем проверку что и в предыдущем варе только сразу
-        # на моменте создания хэш таблицы.
-        # пример: nums [2, 7, 11, 15]
-        # при первом проходе: i=0, complement = 7, такого нет в хэш таблице, значит
-        # заносится {2(значение): 0(индекс)}.
-        # второй: i=1, complement = 2 - в хэш таблице есть - выводим
-        # И главное еще тут не нужна проверка на одинаковость индексов. Они точно не могут
-        # быть равны тк i постоянно растет и в кэш таблицу заносятся всегда разные i.
-        hashtable = {}
-        for i in range(len(nums)):
-            complement = target - nums[i]
-            if complement in hashtable:
-                return [i, hashtable[complement]]
-            hashtable[nums[i]] = i
-        return []
+    def longestPalindrome(self, s: str) -> str:
+        if not s:
+            return ''
+
+        start, end = 0, 0  # границы текущего максимального палиндрома
+
+        def expand(left: int, right: int) -> (int, int):
+            # расширяемся пока символы равны и не вышли за границы
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+            # после цикла left и right указывают за пределы палиндрома
+            # реальный палиндром — от left+1 до right-1
+            return left + 1, right - 1
+
+        for i in range(len(s)):
+            # вычисления делаются для нечет и чет тк если оставить только первый - будет проскакивать и не
+            # вычислять нужный ответ
+            # палиндром нечётной длины (центр на i)
+            l1, r1 = expand(i, i)
+            # палиндром чётной длины (центр между i и i+1)
+            l2, r2 = expand(i, i + 1)
+
+            # выбираем больший из найденных
+            if r1 - l1 > end - start:
+                start, end = l1, r1
+            if r2 - l2 > end - start:
+                start, end = l2, r2
+
+        # возвращаем срез строки от start до end включительно
+        return s[start:end + 1]
 
 
 s = Solution()
-print(s.twoSum(nums=[2, 7, 11, 15], target=9)) # [0, 1]
-print(s.twoSum(nums=[3, 2, 4], target=6)) # [1, 2]
-print(s.twoSum(nums=[3, 3], target=6)) # [0, 1]
+print(s.longestPalindrome("babad"))  # "bab" или "aba"
+print(s.longestPalindrome("cbbd"))  # "bb"
+print(s.longestPalindrome("a"))  # "a"
+print(s.longestPalindrome("ac"))  # "a" или "c"
+
