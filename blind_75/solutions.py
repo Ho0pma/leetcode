@@ -175,45 +175,164 @@ from typing import List
 
 # # 4 5. Longest Palindromic Substring
 
+# Time: O(n^2) | Space: O(1).
 # Задача: подается строка, нужно найти в ней палиндром максимальной длины.
 
-class Solution:
-    def longestPalindrome(self, s: str) -> str:
-        if not s:
-            return ''
+# class Solution:
+#     def longestPalindrome(self, s: str) -> str:
+#         if not s:
+#             return ''
+#
+#         start, end = 0, 0  # границы текущего максимального палиндрома
+#
+#         def expand(left: int, right: int) -> (int, int):
+#             # расширяемся пока символы равны и не вышли за границы
+#             while left >= 0 and right < len(s) and s[left] == s[right]:
+#                 left -= 1
+#                 right += 1
+#             # после цикла left и right указывают за пределы палиндрома
+#             # реальный палиндром — от left+1 до right-1
+#             return left + 1, right - 1
+#
+#         for i in range(len(s)):
+#             # вычисления делаются для нечет и чет тк если оставить только первый - будет проскакивать и не
+#             # вычислять нужный ответ
+#             # палиндром нечётной длины (центр на i)
+#             l1, r1 = expand(i, i)
+#             # палиндром чётной длины (центр между i и i+1)
+#             l2, r2 = expand(i, i + 1)
+#
+#             # выбираем больший из найденных
+#             if r1 - l1 > end - start:
+#                 start, end = l1, r1
+#             if r2 - l2 > end - start:
+#                 start, end = l2, r2
+#
+#         # возвращаем срез строки от start до end включительно
+#         return s[start:end + 1]
+#
+#
+# s = Solution()
+# print(s.longestPalindrome("babad"))  # "bab" или "aba"
+# print(s.longestPalindrome("cbbd"))  # "bb"
+# print(s.longestPalindrome("a"))  # "a"
+# print(s.longestPalindrome("ac"))  # "a" или "c"
 
-        start, end = 0, 0  # границы текущего максимального палиндрома
 
-        def expand(left: int, right: int) -> (int, int):
-            # расширяемся пока символы равны и не вышли за границы
-            while left >= 0 and right < len(s) and s[left] == s[right]:
-                left -= 1
-                right += 1
-            # после цикла left и right указывают за пределы палиндрома
-            # реальный палиндром — от left+1 до right-1
-            return left + 1, right - 1
+########################################################################################################################
 
-        for i in range(len(s)):
-            # вычисления делаются для нечет и чет тк если оставить только первый - будет проскакивать и не
-            # вычислять нужный ответ
-            # палиндром нечётной длины (центр на i)
-            l1, r1 = expand(i, i)
-            # палиндром чётной длины (центр между i и i+1)
-            l2, r2 = expand(i, i + 1)
+# # 4 647. Palindromic Substrings
 
-            # выбираем больший из найденных
-            if r1 - l1 > end - start:
-                start, end = l1, r1
-            if r2 - l2 > end - start:
-                start, end = l2, r2
+# Time: O(n^2) | Space: O(n).
+# Задача: найти кол-во палиндромов в строке
 
-        # возвращаем срез строки от start до end включительно
-        return s[start:end + 1]
+# Example 2:
+#
+# Input: s = "aaa"
+# Output: 6
+# Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
+# class Solution:
+#     def countSubstrings(self, s: str) -> int:
+#         def expand(left, right):
+#             counter = 0
+#             while left >= 0 and right < len(s) and s[left] == s[right]:
+#                 left -= 1
+#                 right += 1
+#                 counter += 1
+#             return counter
+#
+#         total_count = 0
+#         for i in range(len(s)):
+#             total_count += expand(i, i)
+#             total_count += expand(i, i + 1)
+#
+#         return total_count
+#
+#
+# s = Solution()
+# print(s.countSubstrings(s="aaa")) # 6 "a", "a", "a", "aa", "aa", "aaa"
+# print(s.countSubstrings(s="abc")) # 3 a b c
+
+########################################################################################################################
+
+# # 268. Missing Number
+
+# Задача: нужно найти число, которое пропущено в последовательности
+
+# Example 1:
+# Input: nums = [3,0,1]
+# Output: 2 тк [0, 1, 2, 3] - два было пропущено
+# Explanation: n = 3 since there are 3 numbers, so all numbers are in the range [0,3].
+# 2 is the missing number in the range since it does not appear in nums.
+
+# 1)
+# Using Indexes Time: O(n) | Space: O(1). Используя формулу суммы ряда
+
+# КАК ВЫЧИСЛИТЬ СУММУ РЯДА
+# n = [0, 1, 2, 3, 4, 5, 6] # 0 + 1 + 2 + 3 + 4 + 5 + 6 = 21 - сумма ряда
+# print(sum(n))
+
+# ФОРМУЛА
+# n = 6 # кол-во натуральных чисел в ряде (натуральные числа - это числа больше 0 идущие по порядку)
+# sum_seq = (n * (n + 1)) / 2 # сумма ряда
+# print(sum_seq)
+
+# class Solution:
+#     def missingNumber(self, nums: List[int]):
+#         n = len(nums)
+#         sum_seq = n * (n + 1) / 2
+#         sum_nums = sum(nums)
+#         return sum_seq - sum_nums
+#
+# s = Solution()
+# print(s.missingNumber(nums=[3, 0, 1])) # 2
+# print(s.missingNumber(nums=[0, 1, 2, 3])) # 4
+# print(s.missingNumber(nums=[0, 1, 2, 3, 5])) # 4
+
+# 2)
+# Using Vectors Time: O(n) | Space: O(n).
+# class Solution:
+#     def missingNumber(self, nums: List[int]) -> int:
+#         # создаем список той длины, который должен быть включая пропущенный элемент
+#         v = [-1] * (len(nums) + 1)
+#         print(v)
+#
+#         # заполняем его с помощью того что задан
+#         for num in nums:
+#             v[num] = num
+#         print(v)
+#         # вычисляем оставшуюся единицу
+#         for i in range(len(v)):
+#             if v[i] == -1:
+#                 return i
+# #
+# s = Solution()
+# print(s.missingNumber(nums=[3, 0, 1])) # 2
+# print(s.missingNumber(nums=[0, 5, 1, 2, 3])) # 4
 
 
-s = Solution()
-print(s.longestPalindrome("babad"))  # "bab" или "aba"
-print(s.longestPalindrome("cbbd"))  # "bb"
-print(s.longestPalindrome("a"))  # "a"
-print(s.longestPalindrome("ac"))  # "a" или "c"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
