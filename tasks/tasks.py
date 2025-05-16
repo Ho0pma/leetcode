@@ -98,3 +98,61 @@
 #
 # print(x)  # ?
 # print(x or 5)  # ?
+
+# 9)
+# a = '123456789a'
+# b = '123456789a'
+# print(a == b) # ?
+# print(a is b) # ?
+
+# 10)
+# a = '123456789'
+# a += 'a'
+# b = '123456789a'
+# print(a == b) # ?
+# print(a is b) # ?
+
+# 11)
+# a = [1, 2, 3]
+# b = [1, 2, 3]
+# print(a == b) #?
+# print(a is b) #?
+
+# 12)
+# a = frozenset({1, 2, 3})
+# b = frozenset({1, 2, 3})
+# print(a == b) #?
+# print(a is b) #?
+
+# 13)
+# a = {1, 2, 3}
+# b = {1, 2, 3}
+# print(a == b) #?
+# print(a is b) #?
+
+
+# 14) декоратор с пробросом аргументов
+
+def outer(a=1):
+    def decorator_some_func(func):
+        def wrapper(*args, **kwargs):
+            print(a)  # 1234
+            print('before')
+            result = func(*args, **kwargs)
+            print('after')
+            return result
+
+        return wrapper
+
+    return decorator_some_func
+
+
+@outer(a=1234)
+def some_func():
+    print('func')
+
+
+# some_func()
+dec = outer(1234)
+some_func_dec = dec(some_func)
+some_func_dec()

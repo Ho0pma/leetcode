@@ -32,7 +32,10 @@ from typing import List
 
 # 15. 3Sum
 
-# Задача:
+# Задача: подается список чисел, нужно найти такие 3 числа, которые в сумме дают 0 --> nums[i] + nums[j] + nums[k] == 0
+# также нужно учесть, что индексы у всех чисел должны быть разные
+# те [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k,
+# Числа дающие в сумме 0 не должны повторяться.
 
 # Example 1:
 #
@@ -47,25 +50,35 @@ from typing import List
 
 # 1) Time O(n^2) Space O(1)
 class Solution:
+    # left = j, right = k
+    #
     def threeSum(self, nums: List[int]) -> List[List[int]]:
+        # Если проходить брут форсом те для каждого i проверять сумму трех, то появляются дубликаты в ответе
+        # сортируем массив тк тогда становится возможным отбрасывать дубликаты i
+        #  i  j  j  j  j  k
+        # [1, 1, 1, 4, 5, 6] --> пройдя для первой 1 все j и k не будет нужно проходить второй раз на след итерации
         nums.sort()
         result_lst = []
 
-        for a in range(len(nums)):
-            if a > 0 and nums[a] == nums[a - 1]:
+        for i in range(len(nums)):
+            # проверка, что предыдущий i не дубликат
+            if i > 0 and nums[i] == nums[i - 1]:
                 continue
 
-            left = a + 1
+            left = i + 1
             right = len(nums) - 1
 
+            # по идем по двум указателям, проверяем сумму
             while left < right:
-                threeSum = nums[a] + nums[left] + nums[right]
+                threeSum = nums[i] + nums[left] + nums[right]
                 if threeSum > 0:
                     right -= 1
                 elif threeSum < 0:
                     left += 1
                 else:
-                    result_lst.append([nums[a], nums[left], nums[right]])
+                    # если нашли = 0, то добавляем к результату и сдвигаем указатель.
+                    # Также проверяем, чтобы left не повторялся, чтобы не проходить какой-то этап повторно
+                    result_lst.append([nums[i], nums[left], nums[right]])
                     left += 1
                     while nums[left] == nums[left - 1] and left < right:
                         left += 1

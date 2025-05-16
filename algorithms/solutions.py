@@ -3,7 +3,6 @@ from encodings import search_function
 from math import sqrt, ceil, floor
 from typing import List, Optional
 
-
 # 1. Two Sum / Easy
 
 # задача: задается список и target. Нужно найти пары чисел, которые в сумме = target и вывести их индексы.
@@ -663,6 +662,7 @@ from typing import List, Optional
 # 3) O(n) по скорости и памяти такой же как и второй вар
 # используя динамическое программирование. Создается массив от 0 до n + 1 ступенек.
 # нулевая и первая ступень - есть только одно действие, чтобы добраться до вершины
+# только скорее последняя и предпоследняя
 # 2 ступень - есть два действия 1 + 1 и 2 + 0 => 2
 # 3 ступень - есть три действия 1 + 1 + 1 / 1 + 2 / 2 + 1 => 3
 # можно заметить, что кол-во вариаций текущей вершины = сумма предыдущей ступени и предпредыдущей
@@ -1172,4 +1172,197 @@ from typing import List, Optional
 
 # ----------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------
+# 118. Pascal's Triangle
+
+# url: https://leetcode.com/problems/pascals-triangle/
+
+# задача: составить треугольник паскаля, задается n строк (кол-во строк в дерева паскаля, которые должны вывестись)
+
+# 1)
+# class Solution:
+#     def generate(self, n: int) -> List[List[int]]:
+#         if n == 0:
+#             return []
+#         # отбойник, [[1]] - тк так просят по заданию
+#         if n == 1:
+#             return [[1]]
 #
+#         # идем вниз до n = 1
+#         prev_rows = self.generate(n - 1)
+#         prev_row = prev_rows[-1] # нужна последняя запись для работы с текущей
+#         current = [1] # начинается всегда с 1
+#
+#         for i in range(1, n - 1):
+#             current.append(prev_row[i - 1] + prev_row[i])
+#
+#         current.append(1) # заканчивается всегда 1
+#         prev_rows.append(current)
+#
+#         return prev_rows
+#
+#
+# s = Solution()
+# print(s.generate(5)) # Output: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+# print(s.generate(1)) # Output: [[1]]
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 119. Pascal's Triangle II
+
+# url: https://leetcode.com/problems/pascals-triangle-ii/description/
+
+# задача: задача построить треугольник паскаля, отличается выводом от первого задания
+
+# 1)
+# class Solution:
+#     def getRow(self, n: int) -> List[int]:
+#         if n == 0:
+#             return [1]
+#
+#         if n == 1:
+#             return [1, 1]
+#
+#         prev = self.getRow(n - 1)
+#         current = [1]
+#
+#         for i in range(1, n):
+#             current.append(prev[i - 1] + prev[i])
+#
+#         current.append(1)
+#         prev = current
+#
+#         return prev
+#
+#
+# s = Solution()
+# print(s.getRow(3)) # out: [1, 3, 3, 1]
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 121. Best Time to Buy and Sell Stock
+
+# url: https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/
+
+# задача: нужно найти максимальную прибыль. Скажем у нас такой список: [7, 1, 5, 3, 6, 4]
+# то макс прибыль будет, если купить в первый день (1) и продать в четвертый день (6) те = 5
+
+# 1)
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         # устанавливаем первую покупку
+#         buy = prices[0]
+#         profit = 0
+#
+#         for i in range(1, len(prices)):
+#             # если следующее i меньше чем покупка, то и профит с продажи будет больше
+#             if prices[i] < buy:
+#                 buy = prices[i]
+#             # тут мы просто проверяем больше ли текущий профит, чем предыдущий
+#             elif prices[i] - buy > profit:
+#                 profit = prices[i] - buy
+#
+#         return profit
+#
+#
+# s = Solution()
+# print(s.maxProfit(prices=[7, 1, 5, 3, 6, 4]))  # Output: 5
+# print(s.maxProfit(prices=[7, 6, 4, 3, 1]))  # Output: 0
+# print(s.maxProfit(prices=[1, 2]))  # Output: 1
+# print(s.maxProfit(prices=[1, 2, 3]))  # Output: 2
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 412. Fizz Buzz
+
+# url: https://leetcode.com/problems/fizz-buzz/description/
+
+# задача: нужно составить список. Если число делится на 3 без остатка, то пишем физ. Если на 5 - баз
+# если и на 3 и на 5 - физбаз. Если ничего из этого - просто добавить число
+
+# 1)
+# class Solution:
+#     def fizzBuzz(self, n: int) -> List[str]:
+#         lst = []
+#
+#         for i in range(1, n + 1):
+#             current_s = ''
+#
+#             if i % 3 == 0:
+#                 current_s += 'Fizz'
+#             if i % 5 == 0:
+#                 current_s += 'Buzz'
+#
+#             lst.append(current_s or str(i))
+#
+#         return lst
+#
+#
+# s = Solution()
+# print(s.fizzBuzz(3)) # out: [1, 2, 'Fizz']
+# print(s.fizzBuzz(5)) # out: [1, 2, 'Fizz', 4, 'Buzz']
+# print(s.fizzBuzz(15)) # out: [1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 11, 'Fizz', 13, 14, 'FizzBuzz']
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+# 125. Valid Palindrome
+
+# url: https://leetcode.com/problems/valid-palindrome/description/
+
+# задача: проверить является ли строка палиндромом
+
+# 1)
+# from string import ascii_letters, digits
+#
+#
+# class Solution:
+#     def isPalindrome(self, s: str) -> bool:
+#         sorted_s = ''
+#         can_be_used = ascii_letters + digits
+#         for i in s:
+#             if i in can_be_used:
+#                 sorted_s += i.lower()
+#
+#         return sorted_s == sorted_s[::-1]
+#
+#
+# s = Solution()
+# print(s.isPalindrome(s="A man, a plan, a canal: Panama"))  # Output: true
+# print(s.isPalindrome(s="race a carr"))
+# print(s.isPalindrome(s="0P"))
+
+# 2) через два поинтера
+# from string import ascii_letters, digits
+# class Solution:
+#     def isPalindrome(self, s: str) -> bool:
+#         sorted_s = ''
+#         can_be_used = ascii_letters + digits
+#         for i in s:
+#             if i in can_be_used:
+#                 sorted_s += i.lower()
+#
+#         # код, что создают строку состоящую только из цифр и букв:
+#         # isalnum - только цифры и буквы
+#         # strippedString = ''.join(filter(lambda char : char.isalnum(), s.lower()))
+#
+#         if not sorted_s:
+#             return True
+#
+#         i, j = 0, len(sorted_s) - 1
+#         while i < j:
+#             if sorted_s[i] != sorted_s[j]:
+#                 return False
+#             i += 1
+#             j -= 1
+#
+#         return True
+#
+#
+# s = Solution()
+# print(s.isPalindrome(s="A man, a plan, a canal: Panama"))  # Output: true
+# print(s.isPalindrome(s="race a carr")) # Output: false
+# print(s.isPalindrome(s="0P")) # Output: false
+# print(s.isPalindrome(s=" "))  # Output: false
+# print(s.isPalindrome(s="aa")) # Output: true
+
+# ----------------------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------

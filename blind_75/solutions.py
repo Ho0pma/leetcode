@@ -310,29 +310,131 @@ from typing import List
 # print(s.missingNumber(nums=[3, 0, 1])) # 2
 # print(s.missingNumber(nums=[0, 5, 1, 2, 3])) # 4
 
+########################################################################################################################
+
+# # 11. Container With Most Water
+
+# Задача: Представляем контейнер с водой в котором есть перегородки. Каждая перегородка разной высоты
+#         Нужно найти максимальную площадь, которая может быть заполнена водой.
+#   1 +
+#   2 +
+#   3 +         +   --> 6 * 3 = 18
+#   4 +     +   +
+#   5 +     +   +
+#   6 + + + + + +
+#     1 2 3 4 5 6
+
+# Input: height = [1,8,6,2,5,4,8,3,7]
+# Output: 49
+# Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7].
+# In this case, the max area of water (blue section) the container can contain is 49.
+
+# class Solution:
+#     def maxArea(self, num_lust: List[int]) -> int:
+#         left = 0
+#         right = len(num_lust) - 1
+#         max_area = 0
+#         while left < right:
+#             # ширину узнаем через разницу индексов
+#             width = right - left
+#             # берем минимальную высотку из двух столбцов (чтобы вода не проливалась через край)
+#             height = min(num_lust[left], num_lust[right])
+#             # вычисляем площадь
+#             current_length = width * height
+#
+#             if max_area < current_length:
+#                 max_area = current_length
+#
+#             # участок кода выше можно записать одной строкой:
+#             # max_area = max(max_area, (right - left) * min(height[left], height[right]))
+#
+#             if num_lust[left] < num_lust[right]:
+#                 left += 1
+#             else:
+#                 right -= 1
+#
+#         return max_area
+#
+#
+# s = Solution()
+# print(s.maxArea(num_lust=[1, 8, 6, 2, 5, 4, 8, 3, 7])) # 49
+# print(s.maxArea(num_lust=[1, 1])) # 1
+
+########################################################################################################################
+
+# 125. Valid Palindrome
+
+# tags: two pointers
+
+# Задача: подается строк типа "A man, a plan, a canal: Panama". Может содержать что угодно.
+# Нужно понять является ли она палиндромом, если убрать все кроме букв и цифр.
+
+# 1) two pointers - Time: O(n^2) Space O(n)
+# class Solution:
+#     def isPalindrome(self, s: str) -> bool:
+#         # очень затратная идея копировать так строку тк мы ее пересоздаем постоянно
+#         # и именно из-за этого сложность O(n^2)
+#         new_s = ''
+#         for i in s.lower():
+#             if i.isalpha():
+#                 new_s += i
+#         print(new_s)
+#
+#         left = 0
+#         right = len(new_s) - 1
+#         while left < right:
+#             if new_s[left] != new_s[right]:
+#                 return False
+#             left += 1
+#             right -= 1
+#
+#         return True
+#
+# s = Solution()
+# print(s.isPalindrome(s="A man, a plan, a canal: Panama")) # true
+# print(s.isPalindrome(s="race a car")) # false
+# print(s.isPalindrome(s=" ")) # true
+
+# 2) by reverse Time: O(n^2) Space O(n)
+# class Solution:
+#     def isPalindrome(self, s: str) -> bool:
+#         new_s = ''
+#         for i in s.lower():
+#             if i.isalnum():
+#                 new_s += i.lower()
+#
+#         return new_s == new_s[::-1]
+#
+#
+# s = Solution()
+# print(s.isPalindrome(s="A man, a plan, a canal: Panama")) # true
+# print(s.isPalindrome(s="race a car")) # false
+# print(s.isPalindrome(s=" ")) # true
+
+# 3) Time O(n) Space O(1)
+class Solution:
+    # используется свой isalnum
+    def isalnum(self, c):
+        return ord('A') <= ord(c) <= ord('Z') or ord('a') <= ord(c) <= ord('z') or ord('0') <= ord(c) <= ord('9')
+
+    def isPalindrome(self, s: str) -> bool:
+        left = 0
+        right = len(s) - 1
+        while left < right:
+            # проверка тут на left < right позволяет пройти вот такой кейс "a-----"
+            while left < right and not self.isalnum(s[left]):
+                left += 1
+            while left < right and not self.isalnum(s[right]):
+                right -= 1
+            if s[left].lower() != s[right].lower():
+                return False
+            left += 1
+            right -= 1
+
+        return True
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+s = Solution()
+print(s.isPalindrome(s="A man, a plan, a canal: Panama"))  # true
+print(s.isPalindrome(s="race a car"))  # false
+print(s.isPalindrome(s=" "))  # true
