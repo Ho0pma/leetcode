@@ -363,9 +363,9 @@ from typing import List
 ########################################################################################################################
 
 # 125. Valid Palindrome
-
+#
 # tags: two pointers
-
+#
 # Задача: подается строк типа "A man, a plan, a canal: Panama". Может содержать что угодно.
 # Нужно понять является ли она палиндромом, если убрать все кроме букв и цифр.
 
@@ -412,29 +412,29 @@ from typing import List
 # print(s.isPalindrome(s=" ")) # true
 
 # 3) Time O(n) Space O(1)
-class Solution:
-    # используется свой isalnum
-    def isalnum(self, c):
-        return ord('A') <= ord(c) <= ord('Z') or ord('a') <= ord(c) <= ord('z') or ord('0') <= ord(c) <= ord('9')
-
-    def isPalindrome(self, s: str) -> bool:
-        left = 0
-        right = len(s) - 1
-        while left < right:
-            # проверка тут на left < right позволяет пройти вот такой кейс "a-----"
-            while left < right and not self.isalnum(s[left]):
-                left += 1
-            while left < right and not self.isalnum(s[right]):
-                right -= 1
-            if s[left].lower() != s[right].lower():
-                return False
-            left += 1
-            right -= 1
-
-        return True
-
-
-s = Solution()
-print(s.isPalindrome(s="A man, a plan, a canal: Panama"))  # true
-print(s.isPalindrome(s="race a car"))  # false
-print(s.isPalindrome(s=" "))  # true
+# class Solution:
+#     # используется свой isalnum
+#     def isalnum(self, c):
+#         return ord('A') <= ord(c) <= ord('Z') or ord('a') <= ord(c) <= ord('z') or ord('0') <= ord(c) <= ord('9')
+#
+#     def isPalindrome(self, s: str) -> bool:
+#         left = 0
+#         right = len(s) - 1
+#         while left < right:
+#             # проверка тут на left < right позволяет пройти вот такой кейс "a-----"
+#             while left < right and not self.isalnum(s[left]):
+#                 left += 1
+#             while left < right and not self.isalnum(s[right]):
+#                 right -= 1
+#             if s[left].lower() != s[right].lower():
+#                 return False
+#             left += 1
+#             right -= 1
+#
+#         return True
+#
+#
+# s = Solution()
+# print(s.isPalindrome(s="A man, a plan, a canal: Panama"))  # true
+# print(s.isPalindrome(s="race a car"))  # false
+# print(s.isPalindrome(s=" "))  # true
