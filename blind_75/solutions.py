@@ -1,7 +1,7 @@
 from typing import List
 
 
-# # 1. 128. Longest Consecutive Sequence
+# # 1. 128. Longest Consecutive Sequence (hash table)
 # 1) Time: O(n log n) | Space: O(n)
 # class Solution:
 #     def longestConsecutive(self, nums: List[int]) -> int:
@@ -60,7 +60,7 @@ from typing import List
 
 ########################################################################################################################
 
-# # 2. 1. Two Sum
+# # 2. 1. Two Sum (hash table)
 # 1) Brute force  Time: O(n^2) | Space: O(1)
 # class Solution:
 #     def twoSum(self, nums: List[int], target: int) -> List[int]:
@@ -136,7 +136,7 @@ from typing import List
 
 ########################################################################################################################
 
-# # 3 3. Longest Substring Without Repeating Characters
+# # 3 3. Longest Substring Without Repeating Characters (sliding window)
 
 # Задача:подается строка,
 # нужно найти в ней самую длинную последовательность неповторяющихся символов идущих по порядку.
@@ -173,7 +173,7 @@ from typing import List
 
 ########################################################################################################################
 
-# # 4 5. Longest Palindromic Substring
+# # 4 5. Longest Palindromic Substring (two pointers)
 
 # Time: O(n^2) | Space: O(1).
 # Задача: подается строка, нужно найти в ней палиндром максимальной длины.
@@ -221,7 +221,7 @@ from typing import List
 
 ########################################################################################################################
 
-# # 4 647. Palindromic Substrings
+# # 4 647. Palindromic Substrings (two pointers)
 
 # Time: O(n^2) | Space: O(n).
 # Задача: найти кол-во палиндромов в строке
@@ -255,7 +255,7 @@ from typing import List
 
 ########################################################################################################################
 
-# # 268. Missing Number
+# # 268. Missing Number (formula)
 
 # Задача: нужно найти число, которое пропущено в последовательности
 
@@ -312,7 +312,7 @@ from typing import List
 
 ########################################################################################################################
 
-# # 11. Container With Most Water
+# # 11. Container With Most Water (two pointers)
 
 # Задача: Представляем контейнер с водой в котором есть перегородки. Каждая перегородка разной высоты
 #         Нужно найти максимальную площадь, которая может быть заполнена водой.
@@ -362,7 +362,57 @@ from typing import List
 
 ########################################################################################################################
 
-# 125. Valid Palindrome
+# 15. 3Sum (two pointers)
+
+# Задача:
+
+# Example 1:
+#
+# Input: nums = [-1,0,1,2,-1,-4]
+# Output: [[-1,-1,2],[-1,0,1]]
+# Explanation:
+# nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+# nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+# nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+# The distinct triplets are [-1,0,1] and [-1,-1,2].
+# Notice that the order of the output and the order of the triplets does not matter.
+
+# 1) Time O(n^2) Space O(1)
+# class Solution:
+#     def threeSum(self, nums: List[int]) -> List[List[int]]:
+#         nums.sort()
+#         result_lst = []
+#
+#         for a in range(len(nums)):
+#             if a > 0 and nums[a] == nums[a - 1]:
+#                 continue
+#
+#             left = a + 1
+#             right = len(nums) - 1
+#
+#             while left < right:
+#                 threeSum = nums[a] + nums[left] + nums[right]
+#                 if threeSum > 0:
+#                     right -= 1
+#                 elif threeSum < 0:
+#                     left += 1
+#                 else:
+#                     result_lst.append([nums[a], nums[left], nums[right]])
+#                     left += 1
+#                     while nums[left] == nums[left - 1] and left < right:
+#                         left += 1
+#
+#         return result_lst
+#
+#
+# s = Solution()
+# print(s.threeSum(nums=[-1, 0, 1, 2, -1, -4]))  # [[-1,-1,2],[-1,0,1]]
+# print(s.threeSum(nums=[0, 1, 1]))  # []
+# print(s.threeSum(nums=[0, 0, 0]))  # [[0, 0, 0]]
+
+########################################################################################################################
+
+# 125. Valid Palindrome (two pointers)
 #
 # tags: two pointers
 #
@@ -438,3 +488,35 @@ from typing import List
 # print(s.isPalindrome(s="A man, a plan, a canal: Panama"))  # true
 # print(s.isPalindrome(s="race a car"))  # false
 # print(s.isPalindrome(s=" "))  # true
+
+########################################################################################################################
+
+# 121. Best Time to Buy and Sell Stock (sliding window)
+
+# Задача:
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+
+        left, right = 0, 1
+        max_profit = 0
+
+        while right < len(prices):
+            if prices[left] < prices[right]:
+                profit = prices[right] - prices[left]
+                max_profit = max(max_profit, profit)
+            else:
+                left += 1
+            right += 1
+
+        return max_profit
+
+
+
+s = Solution()
+print(s.maxProfit(prices=[7, 1, 5, 3, 6, 4]))  # 5
+print(s.maxProfit(prices=[7, 6, 4, 3, 1]))  # 0
+
+########################################################################################################################
+
+
