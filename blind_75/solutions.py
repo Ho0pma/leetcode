@@ -493,29 +493,63 @@ from typing import List
 
 # 121. Best Time to Buy and Sell Stock (sliding window)
 
-# Задача:
+# Задача: подается список чисел (значения валют). Нужно найти лучший момент для продажи валюты.
+#                   0  1  2  3  4  5
+# К примеру prices=[7, 1, 5, 3, 6, 4] - лучший момент купить в 1 и продать в 4 т.е. профит = 6 - 1 = 5
 
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
+# 1) через цикл while Time: O(n) Space O(1)
+# class Solution:
+#     # создаем два указателя. Двигаем правый до тех пока не пройдем все значения в списке
+#     # а левым просто чекаем является ли он минимальным каждый раз.
+#     # Если да - вычисляем профит, обновляем счетчик. Если нет - обновляем новый минимум.
+#     # получается система в виде окошка - sliding window
+#     def maxProfit(self, prices: List[int]) -> int:
+#         left, right = 0, 1
+#         max_profit = 0
+#
+#         while right < len(prices):
+#             if prices[left] < prices[right]:
+#                 profit = prices[right] - prices[left]
+#                 max_profit = max(max_profit, profit)
+#             else:
+#                 left = right
+#             right += 1
+#
+#         return max_profit
+#
+#
+#
+# s = Solution()
+# print(s.maxProfit(prices=[7, 1, 5, 3, 6, 4]))  # 5
+# print(s.maxProfit(prices=[7, 1, 5, 3, 6, 0, 8]))  # 8
+# print(s.maxProfit(prices=[7, 6, 4, 3, 1]))  # 0
 
-        left, right = 0, 1
-        max_profit = 0
-
-        while right < len(prices):
-            if prices[left] < prices[right]:
-                profit = prices[right] - prices[left]
-                max_profit = max(max_profit, profit)
-            else:
-                left += 1
-            right += 1
-
-        return max_profit
-
-
-
-s = Solution()
-print(s.maxProfit(prices=[7, 1, 5, 3, 6, 4]))  # 5
-print(s.maxProfit(prices=[7, 6, 4, 3, 1]))  # 0
+# 1) через цикл for Time: O(n) Space O(1)
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         min_price = float('inf') # + бесконечность
+#         max_profit = 0
+#
+#         for price in prices:
+#             # если текущая цена меньше, чем ранее встретившаяся минимальная,
+#             # обновляем минимальную цену
+#             if price < min_price:
+#                 min_price = price
+#             else:
+#                 # иначе вычисляем профит
+#                 profit = price - min_price
+#                 # и обновляем максимальную
+#                 if profit > max_profit:
+#                     max_profit = profit
+#
+#         return max_profit
+#
+#
+# s = Solution()
+# print(s.maxProfit(prices=[7, 1, 5, 3, 6, 4]))  # 5
+# print(s.maxProfit(prices=[7, 6, 4, 3, 1]))  # 0
+# print(s.maxProfit(prices=[1, 0, 1]))  # 1
+# print(s.maxProfit(prices=[7, 1, 5, 3, 6, 0, 8]))  # 5
 
 ########################################################################################################################
 
