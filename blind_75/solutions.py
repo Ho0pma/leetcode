@@ -553,4 +553,29 @@ from typing import List
 
 ########################################################################################################################
 
+# 217. Contains Duplicate
 
+# Задача: подается список интов. Если в списке есть повторяющиеся значения - вернуть false,
+# если все уникальны - false
+
+# еще можно решить через сортировку и брут форс, увеличивая Time, но уменьшая Space
+# 1) hash_map Time: O(n) Space: O(n)
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        hash_table = set()
+
+        for i in nums:
+            if i in hash_table:
+                return True
+            hash_table.add(i)
+
+        return False
+
+s = Solution()
+print(s.containsDuplicate(nums=[1, 2, 3, 1])) # true
+print(s.containsDuplicate(nums=[1, 2, 3, 4])) # false
+print(s.containsDuplicate(nums=[1, 1, 1, 3, 3, 4, 3, 2, 4, 2])) # true
+
+########################################################################################################################
+
+#
