@@ -553,29 +553,140 @@ from typing import List
 
 ########################################################################################################################
 
-# 217. Contains Duplicate
+# 217. Contains Duplicate (hash map)
 
 # Задача: подается список интов. Если в списке есть повторяющиеся значения - вернуть false,
 # если все уникальны - false
 
 # еще можно решить через сортировку и брут форс, увеличивая Time, но уменьшая Space
 # 1) hash_map Time: O(n) Space: O(n)
-class Solution:
-    def containsDuplicate(self, nums: List[int]) -> bool:
-        hash_table = set()
-
-        for i in nums:
-            if i in hash_table:
-                return True
-            hash_table.add(i)
-
-        return False
-
-s = Solution()
-print(s.containsDuplicate(nums=[1, 2, 3, 1])) # true
-print(s.containsDuplicate(nums=[1, 2, 3, 4])) # false
-print(s.containsDuplicate(nums=[1, 1, 1, 3, 3, 4, 3, 2, 4, 2])) # true
+# class Solution:
+#     def containsDuplicate(self, nums: List[int]) -> bool:
+#         hash_table = set()
+#
+#         for i in nums:
+#             if i in hash_table:
+#                 return True
+#             hash_table.add(i)
+#
+#         return False
+#
+# s = Solution()
+# print(s.containsDuplicate(nums=[1, 2, 3, 1])) # true
+# print(s.containsDuplicate(nums=[1, 2, 3, 4])) # false
+# print(s.containsDuplicate(nums=[1, 1, 1, 3, 3, 4, 3, 2, 4, 2])) # true
 
 ########################################################################################################################
 
+# 238. Product of Array Except Self (formula: multiply
+
+# Задача: подается список интов. Нужно вернуть список состоящий из произведений всех элементов, кроме текущего i.
+# сделать нужно без использования деления.
+# к примеру массив [1, 2, 3, 4].
+# Для i=0 --> 2 * 3 * 4 = 24
+# Для i=1 --> 1 * 3 * 4 = 12
+# Для i=2 --> 1 * 2 * 4 = 8
+# Для i=3 --> 1 * 2 * 3 = 8
+
+# 1) с делением Time: O(n) Space: O(n)
+# class Solution:
+#     def productExceptSelf(self, nums: List[int]) -> List[int]:
+#         total_product = 1
+#         zero_count = 0
 #
+#         # считаем произведение всех НЕ нулевых чисел и количество нулей
+#         for num in nums:
+#             if num == 0:
+#                 zero_count += 1
+#             else:
+#                 total_product *= num
+#
+#         print(zero_count)
+#         print(total_product)
+#         result = []
+#
+#         for num in nums:
+#             # если нулей 2 и более - значит все произведения будут 0
+#             if zero_count > 1:
+#                 result.append(0)
+#             # если один нуль, то два варика:
+#             # либо произведение 0, либо текущий num=0 и нужно посчитать произведение оставшихся
+#             elif zero_count == 1:
+#                 if num == 0:
+#                     result.append(total_product)
+#                 else:
+#                     result.append(0)
+#             # если нет нулей, то произведение оставшихся вычисляется через целочисленное деление
+#             else:
+#                 result.append(total_product // num)
+#
+#         return result
+#
+#
+# s = Solution()
+# print(s.productExceptSelf(nums=[1, 2, 3, 4]))  # [24,12,8,6]
+# print(s.productExceptSelf(nums=[-1, 1, 0, -3, 3]))  # [0,0,9,0,0]
+
+# 2) через префиксы и суффиксы Time: O(n) Space: O(n)
+# class Solution:
+#     def productExceptSelf(self, nums: List[int]) -> List[int]:
+#         n = len(nums)
+#
+#         # составляем начальный массив префиксов [1, 1, 1, 1]
+#         # идем по нему и вычисляем prefix[i]
+#         # prefix[i] = предыдущий элемент в списке prefix на предыдущий элемент в списке nums
+#         # начинаем идти с 1, а не с нуля.
+#         prefix = [1] * n
+#         for i in range(1, n):
+#             prefix[i] = prefix[i - 1] * nums[i - 1]
+#
+#         print(prefix) # [1, 1, 2, 6]
+#
+#         # делаем то же самое в обратном порядке
+#         # range(n - 2, -1, -1) --> start: n-2 - первый индекс (второй справа тк будем брать предыдущего справа i + 1)
+#         #                      -->  stop: -1 - идет пока i > stop
+#         #                      -->  step: -1 - каждый раз отнимаем -1
+#         suffix = [1] * n
+#         for i in range(n - 2, -1, -1):
+#             suffix[i] = suffix[i + 1] * nums[i + 1]
+#
+#         print(suffix) # [24, 12, 4, 1]
+#
+#         # конечный список составляем путем перемножения элементов массива prefix и suffix
+#         result = [1] * n
+#         for i in range(n):
+#             result[i] = prefix[i] * suffix[i]
+#
+#         return result
+#
+#
+# s = Solution()
+# print(s.productExceptSelf(nums=[1, 2, 3, 4]))  # [24,12,8,6]
+# print(s.productExceptSelf(nums=[-1, 1, 0, -3, 3]))  # [0,0,9,0,0]
+
+# 3) через префиксы и суффиксы + оптимизация по памяти Time: O(n) Space: O(1)
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+
+        result = [1] * n
+
+        # также составляем массив префиксов, но только заносим сразу в result
+        for i in range(1, n):
+            result[i] = result[i - 1] * nums[i - 1]
+
+        print(result) # [1, 1, 2, 6]
+
+        # не составляем массив суффиксов, а сразу идем по result в обратном направлении
+        suf = 1
+        # идем в обратном порядке по [1, 2, 3, 4]
+        for i in range(n - 1, -1, -1):
+            result[i] *= suf
+            suf *= nums[i]
+
+        return result
+
+
+s = Solution()
+print(s.productExceptSelf(nums=[1, 2, 3, 4]))  # [24,12,8,6]
+print(s.productExceptSelf(nums=[-1, 1, 0, -3, 3]))  # [0,0,9,0,0]
