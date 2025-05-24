@@ -665,28 +665,75 @@ from typing import List
 # print(s.productExceptSelf(nums=[-1, 1, 0, -3, 3]))  # [0,0,9,0,0]
 
 # 3) через префиксы и суффиксы + оптимизация по памяти Time: O(n) Space: O(1)
+# class Solution:
+#     def productExceptSelf(self, nums: List[int]) -> List[int]:
+#         n = len(nums)
+#
+#         result = [1] * n
+#
+#         # также составляем массив префиксов, но только заносим сразу в result
+#         for i in range(1, n):
+#             result[i] = result[i - 1] * nums[i - 1]
+#
+#         print(result) # [1, 1, 2, 6]
+#
+#         # не составляем массив суффиксов, а сразу идем по result в обратном направлении
+#         suf = 1
+#         # идем в обратном порядке по [1, 2, 3, 4]
+#         for i in range(n - 1, -1, -1):
+#             result[i] *= suf
+#             suf *= nums[i]
+#
+#         return result
+#
+#
+# s = Solution()
+# print(s.productExceptSelf(nums=[1, 2, 3, 4]))  # [24,12,8,6]
+# print(s.productExceptSelf(nums=[-1, 1, 0, -3, 3]))  # [0,0,9,0,0]
+
+
+########################################################################################################################
+
+# 53. Maximum Subarray
+
+# Задача: подается массив интов, нужно найти внутри подмассив с максимальной суммой элементов.
+
+# Example 1:
+#
+# Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+# Output: 6
+# Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+
+# 1) Брут форс Time: O(n^2) Space: O(1)
+# class Solution:
+#     # Медленный способ: для каждого элемента проходим цикл по всем элементам массива.
+#     # Так ты составляешь как бы все возможные массивы. По пути считаешь новый добавленный элемент current_sum
+#     # И сравниваешь его с max_sum. Пройдя по всем выводишь max_sum
+#     def maxSubArray(self, nums: List[int]) -> int:
+#         n = len(nums)
+#         max_sum = float('-inf')  # очень маленькое значение для старта
+#
+#         for start in range(n):
+#             current_sum = 0
+#             for end in range(start, n):
+#                 current_sum += nums[end]
+#                 max_sum = max(max_sum, current_sum)
+#
+#         return max_sum
+#
+# s = Solution()
+# print(s.maxSubArray(nums=[-2, 1, -3, 4, -1, 2, 1, -5, 4]))  # 6 # The subarray [4,-1,2,1] has the largest sum 6.
+# print(s.maxSubArray(nums=[1]))  # 1
+# print(s.maxSubArray(nums=[5, 4, -1, 7, 8]))  # 23
+
+# 2) Брут форс Time: O(n^2) Space: O(1)
 class Solution:
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        n = len(nums)
+    def maxSubArray(self, nums: List[int]) -> int:
 
-        result = [1] * n
 
-        # также составляем массив префиксов, но только заносим сразу в result
-        for i in range(1, n):
-            result[i] = result[i - 1] * nums[i - 1]
-
-        print(result) # [1, 1, 2, 6]
-
-        # не составляем массив суффиксов, а сразу идем по result в обратном направлении
-        suf = 1
-        # идем в обратном порядке по [1, 2, 3, 4]
-        for i in range(n - 1, -1, -1):
-            result[i] *= suf
-            suf *= nums[i]
-
-        return result
 
 
 s = Solution()
-print(s.productExceptSelf(nums=[1, 2, 3, 4]))  # [24,12,8,6]
-print(s.productExceptSelf(nums=[-1, 1, 0, -3, 3]))  # [0,0,9,0,0]
+print(s.maxSubArray(nums=[-2, 1, -3, 4, -1, 2, 1, -5, 4]))  # 6 # The subarray [4,-1,2,1] has the largest sum 6.
+print(s.maxSubArray(nums=[1]))  # 1
+print(s.maxSubArray(nums=[5, 4, -1, 7, 8]))  # 23
