@@ -694,7 +694,7 @@ from typing import List
 
 ########################################################################################################################
 
-# 53. Maximum Subarray
+# 53. Maximum Subarray (KADANE-sliding window)
 
 # Задача: подается массив интов, нужно найти внутри подмассив с максимальной суммой элементов.
 
@@ -726,14 +726,129 @@ from typing import List
 # print(s.maxSubArray(nums=[1]))  # 1
 # print(s.maxSubArray(nums=[5, 4, -1, 7, 8]))  # 23
 
-# 2) Брут форс Time: O(n^2) Space: O(1)
+# 2) sliding window by FOR alg KADANE Time: O(n) Space: O(1)
+# class Solution:
+#     def maxSubArray(self, nums: List[int]) -> int:
+#         max_sum = nums[0] # устанавливаем минимум
+#         cur_sum = 0
+#
+#         # идем по nums и суммируем все встречающиеся элементы и записываем их в cur_sum.
+#         # Так же проверяем cur_sum > 0, чтобы сбрасывать сумму если она отрицательна
+#         for i in nums:
+#             if cur_sum < 0:
+#                 cur_sum = 0
+#             cur_sum += i
+#             max_sum = max(cur_sum, max_sum)
+#
+#         return max_sum
+#
+#
+# s = Solution()
+# print(s.maxSubArray(nums=[-2, 1, -3, 4, -1, 2, 1, -5, 4]))  # 6 # The subarray [4,-1,2,1] has the largest sum 6.
+# print(s.maxSubArray(nums=[1]))  # 1
+# print(s.maxSubArray(nums=[5, 4, -1, 7, 8]))  # 23
+# print(s.maxSubArray(nums=[-2, -3, -1]))  # -1
+
+# 3) sliding window WHILE alg KADANE Time: O(n^2) Space: O(1)
+# class Solution:
+#     def maxSubArray(self, nums: List[int]) -> int:
+#         max_sum = nums[0]
+#         cur_sum = float('-inf')
+#
+#         r = 0
+#         while r < len(nums):
+#             if cur_sum < 0:
+#                 cur_sum = 0
+#             cur_sum += nums[r]
+#             max_sum = max(cur_sum, max_sum)
+#             r += 1
+#
+#         return max_sum
+#
+#
+# s = Solution()
+# print(s.maxSubArray(nums=[-2, 1, -3, 4, -1, 2, 1, -5, 4]))  # 6 # The subarray [4,-1,2,1] has the largest sum 6.
+# print(s.maxSubArray(nums=[1]))  # 1
+# print(s.maxSubArray(nums=[5, 4, -1, 7, 8]))  # 23
+# print(s.maxSubArray(nums=[-2, -3, -1]))  # -1
+
+########################################################################################################################
+
+# 16. 3Sum Closest
+
+# Задача: подается массив интов и таргет. Нужно найти сумму 3x самую близкую к таргету
+#
+# Example 1:
+#
+# Input: nums = [-1,2,1,-4], target = 1
+# Output: 2
+# Explanation: The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+
+# 1) my solution Time: O(n^2) Space O(1)
+# class Solution:
+#     def threeSumClosest(self, nums: List[int], target: int) -> int:
+#         nums.sort()
+#
+#         target_min = float('-inf')
+#         target_max = float('inf')
+#
+#         for i in range(len(nums)):
+#             if i > 0 and nums[i] == nums[i - 1]:
+#                 continue
+#
+#             l = i + 1
+#             r = len(nums) - 1
+#             while l < r:
+#                 three_sum = nums[i] + nums[l] + nums[r]
+#                 if three_sum > target:
+#                     target_max = min(target_max, three_sum)
+#                     r -= 1
+#                 elif three_sum < target:
+#                     target_min = max(target_min, three_sum)
+#                     l += 1
+#                 else:
+#                     return three_sum
+#
+#         # print(abs(target_max - target))
+#         # print(abs(target_min - target))
+#
+#         return target_max if abs(target_max - target) < abs(target_min - target) else target_min
+#
+#
+# s = Solution()
+# print(s.threeSumClosest(nums=[-1, 2, 1, -4], target=1))  # The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+# print(s.threeSumClosest(nums=[0, 0, 0], target=1))  # The sum that is closest to the target is 0. (0 + 0 + 0 = 0).
+# print(s.threeSumClosest(nums=[0, 1, 2], target=0)) # 3
+
+# 2) best Time: O(n^2) Space O(1)
 class Solution:
-    def maxSubArray(self, nums: List[int]) -> int:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        nums.sort()
+        n = len(nums)
+        closest_sum = float('inf')
 
+        for i in range(n):
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
 
+            l = i + 1
+            r = n - 1
+            while l < r:
+                three_sum = nums[i] + nums[l] + nums[r]
+                if abs(closest_sum - target) > abs(three_sum - target):
+                    closest_sum = three_sum
+
+                if three_sum > target:
+                    r -= 1
+                elif three_sum < target:
+                    l += 1
+                else:
+                    return three_sum
+
+        return closest_sum
 
 
 s = Solution()
-print(s.maxSubArray(nums=[-2, 1, -3, 4, -1, 2, 1, -5, 4]))  # 6 # The subarray [4,-1,2,1] has the largest sum 6.
-print(s.maxSubArray(nums=[1]))  # 1
-print(s.maxSubArray(nums=[5, 4, -1, 7, 8]))  # 23
+print(s.threeSumClosest(nums=[-1, 2, 1, -4], target=1))  # The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+print(s.threeSumClosest(nums=[0, 0, 0], target=1))  # The sum that is closest to the target is 0. (0 + 0 + 0 = 0).
+print(s.threeSumClosest(nums=[0, 1, 2], target=0)) # 3
