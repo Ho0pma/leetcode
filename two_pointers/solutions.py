@@ -49,44 +49,63 @@ from typing import List
 # Notice that the order of the output and the order of the triplets does not matter.
 
 # 1) Time O(n^2) Space O(1)
+# class Solution:
+#     # left = j, right = k
+#     #
+#     def threeSum(self, nums: List[int]) -> List[List[int]]:
+#         # Если проходить брут форсом те для каждого i проверять сумму трех, то появляются дубликаты в ответе
+#         # сортируем массив тк тогда становится возможным отбрасывать дубликаты i
+#         #  i  j  j  j  j  k
+#         # [1, 1, 1, 4, 5, 6] --> пройдя для первой 1 все j и k не будет нужно проходить второй раз на след итерации
+#         nums.sort()
+#         result_lst = []
+#
+#         for i in range(len(nums)):
+#             # проверка, что предыдущий i не дубликат
+#             if i > 0 and nums[i] == nums[i - 1]:
+#                 continue
+#
+#             left = i + 1
+#             right = len(nums) - 1
+#
+#             # по идем по двум указателям, проверяем сумму
+#             while left < right:
+#                 threeSum = nums[i] + nums[left] + nums[right]
+#                 if threeSum > 0:
+#                     right -= 1
+#                 elif threeSum < 0:
+#                     left += 1
+#                 else:
+#                     # если нашли = 0, то добавляем к результату и сдвигаем указатель.
+#                     # Также проверяем, чтобы left не повторялся, чтобы не проходить какой-то этап повторно
+#                     result_lst.append([nums[i], nums[left], nums[right]])
+#                     left += 1
+#                     while nums[left] == nums[left - 1] and left < right:
+#                         left += 1
+#
+#         return result_lst
+#
+#
+# s = Solution()
+# print(s.threeSum(nums=[-1, 0, 1, 2, -1, -4]))  # [[-1,-1,2],[-1,0,1]]
+# print(s.threeSum(nums=[0, 1, 1]))  # []
+# print(s.threeSum(nums=[0, 0, 0]))  # [[0, 0, 0]]
+
+####################################################################################################################
+
+# 31. Next Permutation
+
+# Задача:
+
 class Solution:
-    # left = j, right = k
-    #
-    def threeSum(self, nums: List[int]) -> List[List[int]]:
-        # Если проходить брут форсом те для каждого i проверять сумму трех, то появляются дубликаты в ответе
-        # сортируем массив тк тогда становится возможным отбрасывать дубликаты i
-        #  i  j  j  j  j  k
-        # [1, 1, 1, 4, 5, 6] --> пройдя для первой 1 все j и k не будет нужно проходить второй раз на след итерации
-        nums.sort()
-        result_lst = []
-
-        for i in range(len(nums)):
-            # проверка, что предыдущий i не дубликат
-            if i > 0 and nums[i] == nums[i - 1]:
-                continue
-
-            left = i + 1
-            right = len(nums) - 1
-
-            # по идем по двум указателям, проверяем сумму
-            while left < right:
-                threeSum = nums[i] + nums[left] + nums[right]
-                if threeSum > 0:
-                    right -= 1
-                elif threeSum < 0:
-                    left += 1
-                else:
-                    # если нашли = 0, то добавляем к результату и сдвигаем указатель.
-                    # Также проверяем, чтобы left не повторялся, чтобы не проходить какой-то этап повторно
-                    result_lst.append([nums[i], nums[left], nums[right]])
-                    left += 1
-                    while nums[left] == nums[left - 1] and left < right:
-                        left += 1
-
-        return result_lst
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        pass
 
 
 s = Solution()
-print(s.threeSum(nums=[-1, 0, 1, 2, -1, -4]))  # [[-1,-1,2],[-1,0,1]]
-print(s.threeSum(nums=[0, 1, 1]))  # []
-print(s.threeSum(nums=[0, 0, 0]))  # [[0, 0, 0]]
+print(s.nextPermutation([1, 2, 3]))  # [1,3,2]
+print(s.nextPermutation([3, 2, 1]))  # [1,2,3]
+print(s.nextPermutation([1, 1, 5]))  # [1,5,1]
