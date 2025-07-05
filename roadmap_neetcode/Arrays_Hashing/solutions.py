@@ -145,7 +145,8 @@ from collections import Counter, defaultdict
 
 # 49. Group Anagrams
 
-# Задача:
+# Задача: подается список (strs), состоящий из слов. Нужно составить новый список, комбинирующий анаграммы
+# вместе, см пример в конце, сразу понятно.
 
 # PRAC:
 # 1)
@@ -164,13 +165,23 @@ from collections import Counter, defaultdict
 # print(d) # defaultdict(<class 'list'>, {'a': [1], 'b': 1})
 
 
-# 1) Time O(n) Space O(n)
+# 1) Time O(n * k) Space O(n * k)
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        # создаем дикт, который для новых элементов создает по умолчанию пустой список
+        result_dict = defaultdict(list)
 
+        for word in strs:
+            # список для хранения кол-ва символов в слове
+            char_counter_lst = [0] * 26
+            for i in word:
+                char_counter_lst[ord(i) - ord('a')] += 1
 
+            # сохраняем полученный список в качестве ключа, на месте значения - слово, что "просчитывали по буквам"
+            # tuple тк на месте ключа может изменяемого типа данных
+            result_dict[tuple(char_counter_lst)].append(word)
 
-
+        return list(result_dict.values())
 
 
 s = Solution()
