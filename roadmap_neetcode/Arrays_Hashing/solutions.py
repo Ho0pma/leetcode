@@ -166,25 +166,88 @@ from collections import Counter, defaultdict
 
 
 # 1) Time O(n * k) Space O(n * k)
+# class Solution:
+#     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+#         # создаем дикт, который для новых элементов создает по умолчанию пустой список
+#         result_dict = defaultdict(list)
+#
+#         for word in strs:
+#             # список для хранения кол-ва символов в слове
+#             char_counter_lst = [0] * 26
+#             for i in word:
+#                 char_counter_lst[ord(i) - ord('a')] += 1
+#
+#             # сохраняем полученный список в качестве ключа, на месте значения - слово, что "просчитывали по буквам"
+#             # tuple тк на месте ключа может изменяемого типа данных
+#             result_dict[tuple(char_counter_lst)].append(word)
+#
+#         return list(result_dict.values())
+#
+#
+# s = Solution()
+# print(s.groupAnagrams(strs=["eat", "tea", "tan", "ate", "nat", "bat"])) # Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+#####################################################################################################
+
+# 347. Top K Frequent Elements
+
+# Задача: подается список интов (nums) и таргет (k). Нужно найти k максимальных вхождений в массив
+# и вывести эти числа
+# те если nums=[4, 1, -1, 2, -1, 2, 3] и k=2
+# Counter({-1: 2, 2: 2, 4: 1, 1: 1, 3: 1}) -- топ два вхождения имеют -1 и 2
+
+# Time O(n log n)  Space O(n) (за хранение counter)
+# 1) sorting + Counter
+# class Solution:
+#     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+#         nums_counter = Counter(nums)
+#         print(nums_counter)
+#         sorted_nums = sorted(nums_counter.items(), key=lambda x: x[1])
+#         return [i for i, j in sorted_nums][-k:]
+#
+#
+# s = Solution()
+# print(s.topKFrequent(nums=[4, 1, -1, 2, -1, 2, 3], k=2))  # [-1, 2]
+# print(s.topKFrequent(nums=[1, 1, 1, 2, 2, 3], k=2))  # [1,2]
+# print(s.topKFrequent(nums=[1], k=1))  # [1]
+# print(s.topKFrequent(nums=[], k=1))  # []
+
+# 2) Time O(n)  Space O(n)
+# bucket sorting
+# Идея bucket sort:
+# мы заранее знаем диапазон возможных значений ключа, и для каждого значения создаём своё «ведро» (bucket), куда складываем элементы.
+# в конце проходим все ведра по порядку и извлекаем элементы.
 class Solution:
-    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        # создаем дикт, который для новых элементов создает по умолчанию пустой список
-        result_dict = defaultdict(list)
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        count = {}
 
-        for word in strs:
-            # список для хранения кол-ва символов в слове
-            char_counter_lst = [0] * 26
-            for i in word:
-                char_counter_lst[ord(i) - ord('a')] += 1
+        # тут будут храниться значения
+        freq = [[] for i in range(len(nums) + 1)]
+        print(freq)
 
-            # сохраняем полученный список в качестве ключа, на месте значения - слово, что "просчитывали по буквам"
-            # tuple тк на месте ключа может изменяемого типа данных
-            result_dict[tuple(char_counter_lst)].append(word)
+        # работает как Counter, только не сортирует по ключам
+        # # count[num] = сколько раз встретился num
+        for num in nums:
+            count[num] = 1 + count.get(num, 0)
+        print(count)
 
-        return list(result_dict.values())
+        # freq[cnt] = список чисел, у которых частота cnt
+        for num, cnt in count.items():
+            freq[cnt].append(num)
+        print(freq)
+
+        res = []
+        # проходим по ведрам с максимальной частотой к минимальной
+        for i in range(len(nums), 0, -1):
+            for j in freq[i]:
+                res.append(j)
+                if len(res) == k:
+                    return res
 
 
 s = Solution()
-print(s.groupAnagrams(strs=["eat", "tea", "tan", "ate", "nat", "bat"])) # Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
-
-
+# print(s.topKFrequent(nums=[4, 1, -1, 2, -1, 2, 3], k=2))  # [-1, 2]
+# print(s.topKFrequent(nums=[1, 1, 1, 2, 2, 3], k=2))  # [1,2]
+# print(s.topKFrequent(nums=[1], k=1))  # [1]
+# print(s.topKFrequent(nums=[], k=1))  # []
+print(s.topKFrequent(nums=[1, 2, 3, 1, 3, 4, 4, 4], k=3))  # [test]
