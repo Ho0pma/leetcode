@@ -254,22 +254,49 @@ from collections import Counter, defaultdict
 
 #####################################################################################################
 
+# 238. Product of Array Except Self
+
+# Задача: подается список интов (nums), нужно вернуть список состоящий из перемноженных интов (из nums)
+# кроме текущего элемента
+#
+# tip:
+# Для каждого элемента посчитай что-то относительно всех остальных элементов
+# (сумму, произведение, максимум, количество...)
+# — это прям сигнал, что нужно использовать префиксы и суффиксы
+#
+# pref[i] = произведение всего ЛЕВЕЕ позиции i (не включая i).
+# suff[i] = произведение всего ПРАВЕЕ позиции i.
+
+# 1) Time O(n)  Space O(n)
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+
+        prefix = [1] * n
+        for i in range(1, n):
+            print(i)
+            prefix[i] = prefix[i - 1] * nums[i - 1]
+        print(prefix)
+
+        suffix = [1] * n
+        for i in range(n - 2, -1, -1):
+            print(i)
+            suffix[i] = suffix[i + 1] * nums[i + 1]
+        print(suffix)
+
+        res = []
+        for i in range(n):
+            res.append(prefix[i] * suffix[i])
+
+        return res
+
+
+s = Solution()
+print(s.productExceptSelf(nums=[1, 2, 3, 4])) # [24,12,8,6]
+print(s.productExceptSelf(nums=[-1, 1, 0, -3, 3])) # [0,0,9,0,0]
+
+#####################################################################################################
+
 #
 
 # Задача:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
