@@ -217,37 +217,59 @@ from collections import Counter, defaultdict
 # Идея bucket sort:
 # мы заранее знаем диапазон возможных значений ключа, и для каждого значения создаём своё «ведро» (bucket), куда складываем элементы.
 # в конце проходим все ведра по порядку и извлекаем элементы.
-class Solution:
-    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        count = {}
-
-        # тут будут храниться значения
-        freq = [[] for i in range(len(nums) + 1)]
-        print(freq)
-
-        # работает как Counter, только не сортирует по ключам
-        # # count[num] = сколько раз встретился num
-        for num in nums:
-            count[num] = 1 + count.get(num, 0)
-        print(count)
-
-        # freq[cnt] = список чисел, у которых частота cnt
-        for num, cnt in count.items():
-            freq[cnt].append(num)
-        print(freq)
-
-        res = []
-        # проходим по ведрам с максимальной частотой к минимальной
-        for i in range(len(nums), 0, -1):
-            for j in freq[i]:
-                res.append(j)
-                if len(res) == k:
-                    return res
-
-
-s = Solution()
+# class Solution:
+#     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+#         count = {}
+#
+#         # тут будут храниться значения
+#         freq = [[] for i in range(len(nums) + 1)]
+#         print(freq)
+#
+#         # работает как Counter, только не сортирует по ключам
+#         # # count[num] = сколько раз встретился num
+#         for num in nums:
+#             count[num] = 1 + count.get(num, 0)
+#         print(count)
+#
+#         # freq[cnt] = список чисел, у которых частота cnt
+#         for num, cnt in count.items():
+#             freq[cnt].append(num)
+#         print(freq)
+#
+#         res = []
+#         # проходим по ведрам с максимальной частотой к минимальной
+#         for i in range(len(nums), 0, -1):
+#             for j in freq[i]:
+#                 res.append(j)
+#                 if len(res) == k:
+#                     return res
+#
+#
+# s = Solution()
 # print(s.topKFrequent(nums=[4, 1, -1, 2, -1, 2, 3], k=2))  # [-1, 2]
 # print(s.topKFrequent(nums=[1, 1, 1, 2, 2, 3], k=2))  # [1,2]
 # print(s.topKFrequent(nums=[1], k=1))  # [1]
 # print(s.topKFrequent(nums=[], k=1))  # []
-print(s.topKFrequent(nums=[1, 2, 3, 1, 3, 4, 4, 4], k=3))  # [test]
+# print(s.topKFrequent(nums=[1, 2, 3, 1, 3, 4, 4, 4], k=3))  # [test]
+
+#####################################################################################################
+
+#
+
+# Задача:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
