@@ -1,8 +1,9 @@
+import collections
 from typing import List
 from collections import Counter, defaultdict
 
 
-# 217. Contains Duplicate
+# 🌶️ 217. Contains Duplicate
 
 # Задача: есть список nums. Если в нем есть дубликаты - вернуть True, если нет - False
 #
@@ -46,7 +47,7 @@ from collections import Counter, defaultdict
 
 #####################################################################################################
 
-# 242. Valid Anagram
+# 🌶️ 242. Valid Anagram
 #
 # Задача: подается две строки s и t. Нужно определить являются ли они анаграммой (когда из букв
 # одного слова можно составить другие, длина должна совпадать)
@@ -93,7 +94,7 @@ from collections import Counter, defaultdict
 
 #####################################################################################################
 
-# 1. Two Sum
+# 🌶️ 1. Two Sum
 #
 # Задача: подается список интов (nums) и target. Нужно найти такие два инта, которые в сумме дают
 # target. Вернуть индексы этих чисел
@@ -143,7 +144,7 @@ from collections import Counter, defaultdict
 
 #####################################################################################################
 
-# 49. Group Anagrams
+# 🌶️ 49. Group Anagrams
 
 # Задача: подается список (strs), состоящий из слов. Нужно составить новый список, комбинирующий анаграммы
 # вместе, см пример в конце, сразу понятно.
@@ -189,7 +190,7 @@ from collections import Counter, defaultdict
 
 #####################################################################################################
 
-# 347. Top K Frequent Elements
+# 🌶️ 347. Top K Frequent Elements
 
 # Задача: подается список интов (nums) и таргет (k). Нужно найти k максимальных вхождений в массив
 # и вывести эти числа
@@ -254,7 +255,7 @@ from collections import Counter, defaultdict
 
 #####################################################################################################
 
-# 238. Product of Array Except Self
+# 🌶️ 238. Product of Array Except Self
 
 # Задача: подается список интов (nums), нужно вернуть список состоящий из перемноженных интов (из nums)
 # кроме текущего элемента
@@ -268,35 +269,103 @@ from collections import Counter, defaultdict
 # suff[i] = произведение всего ПРАВЕЕ позиции i.
 
 # 1) Time O(n)  Space O(n)
-class Solution:
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        n = len(nums)
-
-        prefix = [1] * n
-        for i in range(1, n):
-            print(i)
-            prefix[i] = prefix[i - 1] * nums[i - 1]
-        print(prefix)
-
-        suffix = [1] * n
-        for i in range(n - 2, -1, -1):
-            print(i)
-            suffix[i] = suffix[i + 1] * nums[i + 1]
-        print(suffix)
-
-        res = []
-        for i in range(n):
-            res.append(prefix[i] * suffix[i])
-
-        return res
-
-
-s = Solution()
-print(s.productExceptSelf(nums=[1, 2, 3, 4])) # [24,12,8,6]
-print(s.productExceptSelf(nums=[-1, 1, 0, -3, 3])) # [0,0,9,0,0]
+# class Solution:
+#     def productExceptSelf(self, nums: List[int]) -> List[int]:
+#         n = len(nums)
+#
+#         prefix = [1] * n
+#         for i in range(1, n):
+#             print(i)
+#             prefix[i] = prefix[i - 1] * nums[i - 1]
+#         print(prefix)
+#
+#         suffix = [1] * n
+#         for i in range(n - 2, -1, -1):
+#             print(i)
+#             suffix[i] = suffix[i + 1] * nums[i + 1]
+#         print(suffix)
+#
+#         res = []
+#         for i in range(n):
+#             res.append(prefix[i] * suffix[i])
+#
+#         return res
+#
+#
+# s = Solution()
+# print(s.productExceptSelf(nums=[1, 2, 3, 4])) # [24,12,8,6]
+# print(s.productExceptSelf(nums=[-1, 1, 0, -3, 3])) # [0,0,9,0,0]
 
 #####################################################################################################
 
-#
+# 🌶️ 36. Valid Sudoku
 
-# Задача:
+# Задача: задача определить валидное ли судоку по правилам
+# 1) Each row must contain the digits 1-9 without repetition.
+# 2) Each column must contain the digits 1-9 without repetition.
+# 3) Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+#
+# squares - это определение квадратов 3х3
+#      0           1         2
+#  0  box(0,0)  box(1,0)  box(2,0)
+#  1  box(0,1)  box(1,1)  box(2,1)
+#  2  box(0,2)  box(1,2)  box(2,2)
+
+# если поделить индекс, скажем row на общее кол-во боксов,
+# то получим индекс бокса по row
+# то же самое можно сделать и с column
+# к примеру имеем индексы row = 5 и col = 2
+# --> (5 // 3, 2 // 3) --> box(1, 0)
+
+# PRAC
+# r = {0: {'5', '3'}}
+# print('5' in r[0])
+
+# 1) Time O(9^2)  Space O(9^2)
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        rows = collections.defaultdict(set)
+        cols = collections.defaultdict(set)
+        squares = collections.defaultdict(set) # key = (r // 3, c // 3)
+
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] == '.':
+                    continue
+                if (board[r][c] in rows[r] or
+                    board[r][c] in cols[c] or
+                    board[r][c] in squares[(r // 3, c // 3)]
+                ):
+                    return False
+                rows[r].add(board[r][c])
+                cols[c].add(board[r][c])
+                squares[(r // 3, c // 3)].add(board[r][c])
+
+        return True
+
+
+s = Solution()
+print(s.isValidSudoku(board=[
+    ["5", "3", ".", ".", "7", ".", ".", ".", "."],
+    ["6", ".", ".", "1", "9", "5", ".", ".", "."],
+    [".", "9", "8", ".", ".", ".", ".", "6", "."],
+    ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
+    ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
+    ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
+    [".", "6", ".", ".", ".", ".", "2", "8", "."],
+    [".", ".", ".", "4", "1", "9", ".", ".", "5"],
+    [".", ".", ".", ".", "8", ".", ".", "7", "9"]
+]))  # True
+
+print(s.isValidSudoku(board=
+                      [     ["8", "3", ".", ".", "7", ".", ".", ".", "."]
+                          , ["6", ".", ".", "1", "9", "5", ".", ".", "."]
+                          , [".", "9", "8", ".", ".", ".", ".", "6", "."]
+                          , ["8", ".", ".", ".", "6", ".", ".", ".", "3"]
+                          , ["4", ".", ".", "8", ".", "3", ".", ".", "1"]
+                          , ["7", ".", ".", ".", "2", ".", ".", ".", "6"]
+                          , [".", "6", ".", ".", ".", ".", "2", "8", "."]
+                          , [".", ".", ".", "4", "1", "9", ".", ".", "5"]
+                          , [".", ".", ".", ".", "8", ".", ".", "7", "9"]])) # False
+
+
