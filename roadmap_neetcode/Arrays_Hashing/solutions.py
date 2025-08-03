@@ -322,50 +322,98 @@ from collections import Counter, defaultdict
 # print('5' in r[0])
 
 # 1) Time O(9^2)  Space O(9^2)
+# class Solution:
+#     def isValidSudoku(self, board: List[List[str]]) -> bool:
+#         rows = collections.defaultdict(set)
+#         cols = collections.defaultdict(set)
+#         squares = collections.defaultdict(set) # key = (r // 3, c // 3)
+#
+#         for r in range(9):
+#             for c in range(9):
+#                 if board[r][c] == '.':
+#                     continue
+#                 if (board[r][c] in rows[r] or
+#                     board[r][c] in cols[c] or
+#                     board[r][c] in squares[(r // 3, c // 3)]
+#                 ):
+#                     return False
+#                 rows[r].add(board[r][c])
+#                 cols[c].add(board[r][c])
+#                 squares[(r // 3, c // 3)].add(board[r][c])
+#
+#         return True
+#
+#
+# s = Solution()
+# print(s.isValidSudoku(board=[
+#     ["5", "3", ".", ".", "7", ".", ".", ".", "."],
+#     ["6", ".", ".", "1", "9", "5", ".", ".", "."],
+#     [".", "9", "8", ".", ".", ".", ".", "6", "."],
+#     ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
+#     ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
+#     ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
+#     [".", "6", ".", ".", ".", ".", "2", "8", "."],
+#     [".", ".", ".", "4", "1", "9", ".", ".", "5"],
+#     [".", ".", ".", ".", "8", ".", ".", "7", "9"]
+# ]))  # True
+#
+# print(s.isValidSudoku(board=
+#                       [     ["8", "3", ".", ".", "7", ".", ".", ".", "."]
+#                           , ["6", ".", ".", "1", "9", "5", ".", ".", "."]
+#                           , [".", "9", "8", ".", ".", ".", ".", "6", "."]
+#                           , ["8", ".", ".", ".", "6", ".", ".", ".", "3"]
+#                           , ["4", ".", ".", "8", ".", "3", ".", ".", "1"]
+#                           , ["7", ".", ".", ".", "2", ".", ".", ".", "6"]
+#                           , [".", "6", ".", ".", ".", ".", "2", "8", "."]
+#                           , [".", ".", ".", "4", "1", "9", ".", ".", "5"]
+#                           , [".", ".", ".", ".", "8", ".", ".", "7", "9"]])) # False
+
+#####################################################################################################
+
+# 🌶️ 36. 128. Longest Consecutive Sequence
+
+# Задача: подается not-sorted массив интов (nums). Нужно найти максимальную последовательность в этом массиве
+# Решить за O(n)
+
+# 1) Time O(n)  Space O(n)
 class Solution:
-    def isValidSudoku(self, board: List[List[str]]) -> bool:
-        rows = collections.defaultdict(set)
-        cols = collections.defaultdict(set)
-        squares = collections.defaultdict(set) # key = (r // 3, c // 3)
+    def longestConsecutive(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
 
-        for r in range(9):
-            for c in range(9):
-                if board[r][c] == '.':
-                    continue
-                if (board[r][c] in rows[r] or
-                    board[r][c] in cols[c] or
-                    board[r][c] in squares[(r // 3, c // 3)]
-                ):
-                    return False
-                rows[r].add(board[r][c])
-                cols[c].add(board[r][c])
-                squares[(r // 3, c // 3)].add(board[r][c])
+        nums_set = set(nums)
+        max_counter = 0
 
-        return True
+        for i in nums_set:
+            if i - 1 not in nums_set:
+                x = i
+                counter = 1
+                while x + 1 in nums_set:
+                    counter += 1
+                    x += 1
+                max_counter = max(counter, max_counter)
+
+        return max_counter
 
 
 s = Solution()
-print(s.isValidSudoku(board=[
-    ["5", "3", ".", ".", "7", ".", ".", ".", "."],
-    ["6", ".", ".", "1", "9", "5", ".", ".", "."],
-    [".", "9", "8", ".", ".", ".", ".", "6", "."],
-    ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
-    ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
-    ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
-    [".", "6", ".", ".", ".", ".", "2", "8", "."],
-    [".", ".", ".", "4", "1", "9", ".", ".", "5"],
-    [".", ".", ".", ".", "8", ".", ".", "7", "9"]
-]))  # True
+print(s.longestConsecutive(nums=[100, 4, 200, 1, 3, 2]))  # 4
+print(s.longestConsecutive(nums=[0, 3, 7, 2, 5, 8, 4, 6, 0, 1]))  # 9
+print(s.longestConsecutive(nums=[1, 0, 1, 2]))  # 3
 
-print(s.isValidSudoku(board=
-                      [     ["8", "3", ".", ".", "7", ".", ".", ".", "."]
-                          , ["6", ".", ".", "1", "9", "5", ".", ".", "."]
-                          , [".", "9", "8", ".", ".", ".", ".", "6", "."]
-                          , ["8", ".", ".", ".", "6", ".", ".", ".", "3"]
-                          , ["4", ".", ".", "8", ".", "3", ".", ".", "1"]
-                          , ["7", ".", ".", ".", "2", ".", ".", ".", "6"]
-                          , [".", "6", ".", ".", ".", ".", "2", "8", "."]
-                          , [".", ".", ".", "4", "1", "9", ".", ".", "5"]
-                          , [".", ".", ".", ".", "8", ".", ".", "7", "9"]])) # False
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
