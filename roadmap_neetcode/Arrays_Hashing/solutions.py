@@ -376,44 +376,27 @@ from collections import Counter, defaultdict
 # Решить за O(n)
 
 # 1) Time O(n)  Space O(n)
-class Solution:
-    def longestConsecutive(self, nums: List[int]) -> int:
-        if not nums:
-            return 0
-
-        nums_set = set(nums)
-        max_counter = 0
-
-        for i in nums_set:
-            if i - 1 not in nums_set:
-                x = i
-                counter = 1
-                while x + 1 in nums_set:
-                    counter += 1
-                    x += 1
-                max_counter = max(counter, max_counter)
-
-        return max_counter
-
-
-s = Solution()
-print(s.longestConsecutive(nums=[100, 4, 200, 1, 3, 2]))  # 4
-print(s.longestConsecutive(nums=[0, 3, 7, 2, 5, 8, 4, 6, 0, 1]))  # 9
-print(s.longestConsecutive(nums=[1, 0, 1, 2]))  # 3
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# class Solution:
+#     def longestConsecutive(self, nums: List[int]) -> int:
+#         if not nums:
+#             return 0
+#
+#         nums_set = set(nums)
+#         max_counter = 0
+#
+#         for i in nums_set:
+#             if i - 1 not in nums_set:
+#                 x = i
+#                 counter = 1
+#                 while x + 1 in nums_set:
+#                     counter += 1
+#                     x += 1
+#                 max_counter = max(counter, max_counter)
+#
+#         return max_counter
+#
+#
+# s = Solution()
+# print(s.longestConsecutive(nums=[100, 4, 200, 1, 3, 2]))  # 4
+# print(s.longestConsecutive(nums=[0, 3, 7, 2, 5, 8, 4, 6, 0, 1]))  # 9
+# print(s.longestConsecutive(nums=[1, 0, 1, 2]))  # 3
