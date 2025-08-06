@@ -142,7 +142,80 @@ import pytest
 # Counter({-1: 2, 2: 2, 4: 1, 1: 1, 3: 1}) -- топ два вхождения имеют -1 и 2
 
 # Time O(n log n)  Space O(n) (за хранение counter)
-# 1) sorting + Counter
-# class Solution:
-#     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-#         pass
+class Solution:
+    # 1) sorting + Counter
+    # def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+    #     # print()
+    #     # print(Counter(nums))
+    #     # counter_nums = sorted(Counter(nums).items(), key=lambda x: x[1])
+    #     # print(counter_nums)
+    #     # print([i for i, j in counter_nums][-k:])
+    #     # return [i for i, j in counter_nums][-k:]
+    #
+    #     # можно наоборот, сортировать в другую сторону, срез обычный (а не с конца)
+    #     print()
+    #     print(Counter(nums))
+    #     counter_nums = sorted(Counter(nums).items(), key=lambda x: -x[1])
+    #     print(counter_nums)
+    #     print([i for i, j in counter_nums][:k])
+    #     return [i for i, j in counter_nums][:k]
+
+    # 2) bucket sort
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        print()
+        bucket = [[] for _ in range(len(nums) + 1)]  # +1, т.к. частота может быть == len(nums)
+        print(bucket) # [[], [], [], [], [], [], [], []]
+
+        nums_counter = {}
+        for i in nums:
+            nums_counter[i] = nums_counter.get(i, 0) + 1
+        print(nums_counter) # {4: 1, 1: 1, -1: 2, 2: 2, 3: 1}
+
+        for i, j in nums_counter.items():
+            bucket[j].append(i)
+        print(bucket) # [[], [4, 1, 3], [-1, 2], [], [], [], []]
+
+        res = []
+        # для кейса когда {1: 3, 2: 2, 3: 1} и t=2 (находятся в разных корзинах)
+        # Если bucket = [[], [1], [2], [3]], то:
+        # range(len(bucket) - 1, 0, -1)
+        # -> range(3, 0, -1)
+        # -> 3, 2, 1
+        for freq in range(len(bucket) - 1, 0, -1):  # от самых больших частот к меньшим
+            for num in bucket[freq]:
+                res.append(num)
+                if len(res) == k:
+                    print("final result:", res)
+                    return res
+
+        print("final result (after loop):", res)
+        return res
+
+@pytest.mark.parametrize(
+    "nums, target, expected",
+    [
+        ([4, 1, -1, 2, -1, 2, 3], 2, ([-1, 2], [2, -1])),
+        ([1, 1, 1, 2, 2, 3], 2, ([1, 2], [2, 1])),
+        ([1], 1, ([1],)),
+        ([], 1, ([],)),
+    ]
+)
+def test_topKFrequent(nums, target, expected):
+    s = Solution()
+    assert s.topKFrequent(nums, target) in expected
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
