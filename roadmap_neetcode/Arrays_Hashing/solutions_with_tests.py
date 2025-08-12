@@ -212,35 +212,154 @@ import pytest
 # кроме текущего элемента
 #
 # 1) Time O(n)  Space O(n)
+# class Solution:
+#     def productExceptSelf(self, nums: List[int]) -> List[int]:
+#         print()
+#         prefix = [1] * len(nums)
+#         print(prefix) # [1, 1, 1, 1]
+#         for i in range(1, len(nums)):
+#             prefix[i] = prefix[i - 1] * nums[i - 1]
+#         print(prefix) # [1, 1, 2, 6]
+#
+#         suffix = [1] * len(nums)
+#         print(suffix)
+#         for i in range(len(nums) - 2, -1, -1):
+#             suffix[i] = suffix[i + 1] * nums[i + 1]
+#         print(suffix) # [24, 12, 4, 1]
+#
+#         for i in range(len(nums)):
+#             nums[i] = prefix[i] * suffix[i]
+#         print('res:', nums) # [24, 12, 8, 6]
+#
+#         return nums
+#
+#
+# @pytest.mark.parametrize(
+#     "nums, expected",
+#     [
+#         ([1, 2, 3, 4], [24, 12, 8, 6]),
+#         ([-1, 1, 0, -3, 3], [0, 0, 9, 0, 0])
+#     ]
+# )
+# def test_productExceptSelf(nums, expected):
+#     s = Solution()
+#     assert s.productExceptSelf(nums) == expected
+
+#####################################################################################################
+
+# 🌶️ 36. Valid Sudoku
+
+# Задача: задача определить валидное ли судоку по правилам
+# 1) Each row must contain the digits 1-9 without repetition.
+# 2) Each column must contain the digits 1-9 without repetition.
+# 3) Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+
+# 1) Time O(9^2)  Space O(9^2)
+# class Solution:
+#     def isValidSudoku(self, board: List[List[str]]) -> bool:
+#         print()
+#         horizontal_dict = defaultdict(list)
+#         vertical_dict = defaultdict(list)
+#         cube_dict = defaultdict(list)
+#
+#         for i in range(9):
+#             for j in range(9):
+#                 if board[i][j] == '.':
+#                     continue
+#                 if (
+#                         board[i][j] in horizontal_dict[i] or
+#                         board[i][j] in vertical_dict[j] or
+#                         board[i][j] in cube_dict[(i // 3, j // 3)]
+#                 ):
+#                     return False
+#
+#                 horizontal_dict[i].append(board[i][j])
+#                 vertical_dict[j].append(board[i][j])
+#                 cube_dict[(i // 3, j // 3)].append(board[i][j])
+#
+#         return True
+#
+# @pytest.mark.parametrize(
+#     'board, expected',
+#     [
+#         (
+#             [
+#                 ["5", "3", ".", ".", "7", ".", ".", ".", "."],
+#                 ["6", ".", ".", "1", "9", "5", ".", ".", "."],
+#                 [".", "9", "8", ".", ".", ".", ".", "6", "."],
+#                 ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
+#                 ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
+#                 ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
+#                 [".", "6", ".", ".", ".", ".", "2", "8", "."],
+#                 [".", ".", ".", "4", "1", "9", ".", ".", "5"],
+#                 [".", ".", ".", ".", "8", ".", ".", "7", "9"]
+#             ], True
+#         ),
+#     ]
+# )
+# def test_isValidSudoku(board, expected):
+#     s = Solution()
+#     assert s.isValidSudoku(board) == expected
+
+#####################################################################################################
+
+# 🌶️ 36. 128. Longest Consecutive Sequence
+
+# Задача: подается not-sorted массив интов (nums). Нужно найти максимальную последовательность в этом массиве
+# Решить за O(n)
+
+# 1) Time O(n)  Space O(n)
 class Solution:
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        print()
-        prefix = [1] * len(nums)
-        print(prefix) # [1, 1, 1, 1]
-        for i in range(1, len(nums)):
-            prefix[i] = prefix[i - 1] * nums[i - 1]
-        print(prefix) # [1, 1, 2, 6]
+    def longestConsecutive(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        nums_set = set(nums)
+        max_counter = 0
+        for i in nums_set:
+            if i - 1 not in nums_set:
+                counter = 1
+                x = i
+                while x + 1 in nums_set:
+                    counter += 1
+                    x += 1
+                max_counter = max(counter, max_counter)
 
-        suffix = [1] * len(nums)
-        print(suffix)
-        for i in range(len(nums) - 2, -1, -1):
-            suffix[i] = suffix[i + 1] * nums[i + 1]
-        print(suffix) # [24, 12, 4, 1]
-
-        for i in range(len(nums)):
-            nums[i] = prefix[i] * suffix[i]
-        print('res:', nums) # [24, 12, 8, 6]
-
-        return nums
-
+        return max_counter
 
 @pytest.mark.parametrize(
-    "nums, expected",
+    'nums, expected',
     [
-        ([1, 2, 3, 4], [24, 12, 8, 6]),
-        ([-1, 1, 0, -3, 3], [0, 0, 9, 0, 0])
+        ([100, 4, 200, 1, 3, 2], 4),
+        ([0, 3, 7, 2, 5, 8, 4, 6, 0, 1], 9),
+        ([1, 0, 1, 2], 3),
     ]
 )
-def test_productExceptSelf(nums, expected):
+def test_longestConsecutive(nums, expected):
     s = Solution()
-    assert s.productExceptSelf(nums) == expected
+    assert s.longestConsecutive(nums) == expected
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
