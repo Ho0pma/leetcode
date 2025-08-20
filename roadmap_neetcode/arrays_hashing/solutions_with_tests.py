@@ -303,40 +303,40 @@ import pytest
 
 #####################################################################################################
 
-# 🌶️ 36. 128. Longest Consecutive Sequence
+# 🌶️ 128. Longest Consecutive Sequence
 
 # Задача: подается not-sorted массив интов (nums). Нужно найти максимальную последовательность в этом массиве
 # Решить за O(n)
 
-# 1) Time O(n)  Space O(n)
-class Solution:
-    def longestConsecutive(self, nums: List[int]) -> int:
-        if not nums:
-            return 0
-        nums_set = set(nums)
-        max_counter = 0
-        for i in nums_set:
-            if i - 1 not in nums_set:
-                counter = 1
-                x = i
-                while x + 1 in nums_set:
-                    counter += 1
-                    x += 1
-                max_counter = max(counter, max_counter)
-
-        return max_counter
-
-@pytest.mark.parametrize(
-    'nums, expected',
-    [
-        ([100, 4, 200, 1, 3, 2], 4),
-        ([0, 3, 7, 2, 5, 8, 4, 6, 0, 1], 9),
-        ([1, 0, 1, 2], 3),
-    ]
-)
-def test_longestConsecutive(nums, expected):
-    s = Solution()
-    assert s.longestConsecutive(nums) == expected
+# # 1) Time O(n)  Space O(n)
+# class Solution:
+#     def longestConsecutive(self, nums: List[int]) -> int:
+#         if not nums:
+#             return 0
+#         nums_set = set(nums)
+#         max_counter = 0
+#         for i in nums_set:
+#             if i - 1 not in nums_set:
+#                 counter = 1
+#                 x = i
+#                 while x + 1 in nums_set:
+#                     counter += 1
+#                     x += 1
+#                 max_counter = max(counter, max_counter)
+#
+#         return max_counter
+#
+# @pytest.mark.parametrize(
+#     'nums, expected',
+#     [
+#         ([100, 4, 200, 1, 3, 2], 4),
+#         ([0, 3, 7, 2, 5, 8, 4, 6, 0, 1], 9),
+#         ([1, 0, 1, 2], 3),
+#     ]
+# )
+# def test_longestConsecutive(nums, expected):
+#     s = Solution()
+#     assert s.longestConsecutive(nums) == expected
 
 
 
