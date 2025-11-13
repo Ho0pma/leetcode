@@ -80,3 +80,41 @@ import pytest
 #     sol = Solution()
 #     assert sol.isValid(s) == expected
 
+# 🌶️ 155. Min Stack
+#
+# Задача: реализовать методы за O(1)
+#
+# 1) Time O(1)  Space O(n)
+class MinStack:
+    def __init__(self):
+        # В стеке храним пары: (значение, минимум на момент вставки)
+        self.stack = []
+
+    def push(self, val: int) -> None:
+        if not self.stack:
+            current_min = val
+        else:
+            current_min = min(val, self.stack[-1][1])
+        self.stack.append((val, current_min))
+
+    def pop(self) -> None:
+        if self.stack:
+            self.stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1][0]
+
+    def getMin(self) -> int:
+        return self.stack[-1][1]
+
+
+min_stack = MinStack()
+min_stack.pop()
+min_stack.push(3)
+print(min_stack.stack)
+min_stack.pop()
+print(min_stack.stack)
+min_stack.push(4)
+print(min_stack.top())
+print(min_stack.getMin())
+
