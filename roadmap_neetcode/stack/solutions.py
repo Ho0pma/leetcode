@@ -81,6 +81,7 @@ import pytest
 #     assert sol.isValid(s) == expected
 
 # 🌶️ 155. Min Stack
+
 #
 # Задача: реализовать методы за O(1)
 #
