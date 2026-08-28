@@ -1,4 +1,5 @@
 from typing import List
+from collections import Counter
 
 
 # 1. ☠️ 26. Remove Duplicates from Sorted Array
@@ -46,7 +47,21 @@ from typing import List
 # print(s.removeDuplicates([0, 1]))  # (2, [0, 1])
 # print(s.removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]))  # (5, [0, 1, 2, 3, 4, '_', '_', '_', '_', '_'])
 
-# ----------------------------------------------------------------------------------------------------------------------#
+# 2) using python features
+# Complexity: Time: O(n), Memory O(n) (because of creating a new set or dict)
+# class Solution:
+#     def removeDuplicates(self, nums: List[int]) -> int:
+#         unique = list(dict.fromkeys(nums)) # preserve order
+#         unique = list(set(nums))           # doesn't preserve order
+#         k = len(unique)
+#         nums[:k] = unique
+#         return k
+#
+# s = Solution()
+# print(s.removeDuplicates([0, 1]))  # (2, [0, 1])
+# print(s.removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]))  # (5, [0, 1, 2, 3, 4, '_', '_', '_', '_', '_'])
+#
+#----------------------------------------------------------------------------------------------------------------------#
 
 # 2. ☠️ 27. Remove Element
 
@@ -97,6 +112,20 @@ from typing import List
 # print(s.removeElement(nums=[3, 2, 2, 3], val=3))  # (2, [2, 2, '_', '_'])
 # print(s.removeElement(nums=[0, 1, 2, 2, 3, 0, 4, 2], val=2))  # (5, [0, 1, 3, 0, 4, '_', '_', '_'])
 
+# 3) using python features
+# Complexity: Time: O(n), Memory O(n) (because of creating a new set or dict)
+# class Solution:
+#     def removeElement(self, nums: list[int], val: int) -> int:
+#         kept = [i for i in nums if i != val]
+#         k = len(kept)
+#         nums[:k] = kept # in-place
+#         return k
+#
+#
+# s = Solution()
+# print(s.removeElement(nums=[3, 2, 2, 3], val=3))  # (2, [2, 2, '_', '_'])
+# print(s.removeElement(nums=[0, 1, 2, 2, 3, 0, 4, 2], val=2))  # (5, [0, 1, 3, 0, 4, '_', '_', '_'])
+
 # ----------------------------------------------------------------------------------------------------------------------#
 
 # 3) 28. Find the Index of the First Occurrence in a String
@@ -112,15 +141,46 @@ from typing import List
 # Input: haystack = "leetcode", needle = "leeto"
 # Output: -1
 
+# 1)  Complexity: Time: O(n), Memory O(1)
+# class Solution:
+#     def strStr(self, haystack: str, needle: str) -> int:
+#         h, n  = len(haystack), len(needle)
 #
-class Solution:
-    def strStr(self, haystack: str, needle: str) -> int:
-        return haystack.find(needle)
+#         if n == 0:
+#             return 0
+#         if n > h:
+#             return -1
+#
+#         for i in range(h - n + 1):
+#             for j in range(n):
+#                 if haystack[i + j] != needle[j]:
+#                     break
+#             else:
+#                 return i # inner loop finished without break → full match
+#
+#         return -1
+#
+#
+# s = Solution()
+# print(s.strStr(haystack="leetcode", needle="leeto")) # -1
+# print(s.strStr(haystack="2112", needle="11")) # 1
+# #                        012345678910
+# print(s.strStr(haystack="mississippi", needle="issipi")) # -1
+# print(s.strStr(haystack="a", needle="a")) # 0
 
+# 2) using python features
+#  Complexity: Time: O(n), Memory O(1)
+# class Solution:
+#     def strStr(self, haystack: str, needle: str) -> int:
+#         return haystack.find(needle)
+#
+#
+# s = Solution()
+# print(s.strStr(haystack="leetcode", needle="leeto"))
+# print(s.strStr(haystack="2112", needle="11"))
+# #                        012345678910
+# print(s.strStr(haystack="mississippi", needle="issipi"))
+# print(s.strStr(haystack="a", needle="a"))
 
-s = Solution()
-print(s.strStr(haystack="leetcode", needle="leeto"))
-print(s.strStr(haystack="2112", needle="11"))
-#                        012345678910
-print(s.strStr(haystack="mississippi", needle="issipi"))
-print(s.strStr(haystack="a", needle="a"))
+# ----------------------------------------------------------------------------------------------------------------------#
+
