@@ -14,7 +14,7 @@ from collections import Counter
 # Input: nums = [0,0,1,1,1,2,2,3,3,4]
 # Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
 
-# 1) Complexity: Time: O(n), Memory O(1)
+# 1) 🌶️ Complexity: Time: O(n), Memory O(1)
 # class Solution:
 #     def removeDuplicates(self, nums: List[int]) -> int:
 #         # discard the edge case
@@ -47,7 +47,7 @@ from collections import Counter
 # print(s.removeDuplicates([0, 1]))  # (2, [0, 1])
 # print(s.removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]))  # (5, [0, 1, 2, 3, 4, '_', '_', '_', '_', '_'])
 
-# 2) using python features
+# 2) 🫑 using python features
 # Complexity: Time: O(n), Memory O(n) (because of creating a new set or dict)
 # class Solution:
 #     def removeDuplicates(self, nums: List[int]) -> int:
@@ -77,7 +77,7 @@ from collections import Counter
 # Input: nums = [0,1,2,2,3,0,4,2], val = 2
 # Output: 5, nums = [0,1,4,0,3,_,_,_]
 
-# 1) Complexity: Time: O(n), Memory O(1)
+# 1) 🌶️ Complexity: Time: O(n), Memory O(1)
 # class Solution:
 #     def removeElement(self, nums: List[int], val: int) -> int:
 #         # set two pointers: i (moving), slow (writing)
@@ -112,7 +112,7 @@ from collections import Counter
 # print(s.removeElement(nums=[3, 2, 2, 3], val=3))  # (2, [2, 2, '_', '_'])
 # print(s.removeElement(nums=[0, 1, 2, 2, 3, 0, 4, 2], val=2))  # (5, [0, 1, 3, 0, 4, '_', '_', '_'])
 
-# 3) using python features
+# 3) 🫑 using python features
 # Complexity: Time: O(n), Memory O(n) (because of creating a new set or dict)
 # class Solution:
 #     def removeElement(self, nums: list[int], val: int) -> int:
@@ -141,7 +141,7 @@ from collections import Counter
 # Input: haystack = "leetcode", needle = "leeto"
 # Output: -1
 
-# 1)  Complexity: Time: O(n), Memory O(1)
+# 1) 🌶️ Complexity: Time: O(n), Memory O(1)
 # class Solution:
 #     def strStr(self, haystack: str, needle: str) -> int:
 #         h, n  = len(haystack), len(needle)
@@ -168,7 +168,7 @@ from collections import Counter
 # print(s.strStr(haystack="mississippi", needle="issipi")) # -1
 # print(s.strStr(haystack="a", needle="a")) # 0
 
-# 2) using python features
+# 2) 🫑 using python features
 #  Complexity: Time: O(n), Memory O(1)
 # class Solution:
 #     def strStr(self, haystack: str, needle: str) -> int:
@@ -184,7 +184,7 @@ from collections import Counter
 
 # ----------------------------------------------------------------------------------------------------------------------#
 
-# 4. ☠️88. Merge Sorted Array
+# 4. ☠️ 88. Merge Sorted Array
 
 # task: You are given two integer arrays nums1 and nums2, sorted in non-decreasing order
 #       and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
@@ -207,7 +207,7 @@ from collections import Counter
 # Input: nums1 = [0], m = 0, nums2 = [1], n = 1
 # Output: [1]
 
-# 1)  Complexity: Time: O(m + n), Memory O(1)
+# 1) 🌶️ Complexity: Time: O(m + n), Memory O(1)
 # class Solution:
 #     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
 #         i = m - 1
@@ -235,7 +235,7 @@ from collections import Counter
 # print(s.merge(nums1=[1], m=1, nums2=[], n=0)) # [1]
 # print(s.merge(nums1=[0], m=0, nums2=[1], n=1)) # [1]
 
-# 2) using python features
+# 2) 🫑 using python features
 # class Solution:
 #     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
 #         # 1) Complexity: Time: O(m + n), Memory O(1)
@@ -258,3 +258,82 @@ from collections import Counter
 
 # ----------------------------------------------------------------------------------------------------------------------#
 
+# 5. ☠️ 125. Valid Palindrome
+
+# task: A phrase is a palindrome if, after converting all uppercase letters into lowercase letters
+#       and removing all non-alphanumeric characters, it reads the same forward and backward.
+#       Alphanumeric characters include letters and numbers.
+#       Given a string s, return true if it is a palindrome, or false otherwise.
+
+# Example 1:
+# Input: s = "A man, a plan, a canal: Panama"
+# Output: true
+
+# Example 2:
+# Input: s = "race a car"
+# Output: false
+
+# Example 3:
+# Input: s = " "
+# Output: true
+
+# 1) 🌶️ Complexity: Time: O(n), Memory O(1) because in-place
+# class Solution:
+#     def isPalindrome(self, s: str) -> bool:
+#         # two pointers here as well
+#         # to do in-place, while loops are necessary
+#         # "while you encounter an invalid character" - increment the pointer
+#         # compare the start and end of the string via two pointers (left, right)
+#         # when left becomes equal to or greater than right - exit
+#
+#         left, right = 0, len(s) - 1
+#         for _ in range(len(s)):
+#             while left < right and not s[left].isalnum():
+#                 left += 1
+#             while left < right and not s[right].isalnum():
+#                 right -= 1
+#             if left >= right:
+#                 break
+#             if s[left].lower() != s[right].lower():
+#                 return False
+#             left += 1
+#             right -= 1
+#         return True
+#
+#
+# s = Solution()
+# print(s.isPalindrome(s="A man, a plan, a canal: Panama"))  # true 'amanaplanacanalpanama'
+
+# 2) 🫑 using python features
+# Complexity: Time: O(n), Memory O(n) because an extra string is created
+# class Solution:
+#     # 1) with logic
+#     def isPalindrome(self, s: str) -> bool:
+#         # create a new string with only valid characters
+#         # go up to the center of the array
+#         # the 2nd pointer can also be done like this:
+#         # j = l - 1
+#         # and decrement it each time, or as in the example l - 1 - i
+#
+#         new_s = ''.join(ch.lower() for ch in s if ch.isalnum())
+#         l = len(new_s)
+#         for i in range(l // 2):
+#             if new_s[i] != new_s[l - 1 - i]:
+#                 return False
+#         return True
+#
+#     # 2) can also be shorter without logic
+#     def isPalindrome(self, s: str) -> bool:
+#         new_s = ''.join(ch.lower() for ch in s if ch.isalnum())
+#         return new_s == new_s[::-1]
+#
+#     # 3) another way to create the string:
+#     def isPalindrome(self, s: str) -> bool:
+#         cleaned = ''.join(filter(str.isalnum, s)).lower()  # complains because a string method is passed
+#         cleaned = ''.join(
+#             filter(lambda ch: ch.isalnum(), s)).lower()  # so the IDE doesn't complain (we pass the element)
+#         return cleaned == cleaned[::-1]
+#
+#
+# s = Solution()
+# print(s.isPalindrome(s="A man, a plan, a canal: Panama"))  # true 'amanaplanacanalpanama'
