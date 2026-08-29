@@ -410,3 +410,95 @@ from collections import Counter
 # print(s.hasCycle(head))
 
 # ----------------------------------------------------------------------------------------------------------------------#
+
+# 7. ☠️ 160. Intersection of Two Linked Lists
+
+# task: Given the heads of two singly linked-lists headA and headB
+#       return the node at which the two lists intersect.
+#       If the two linked lists have no intersection at all, return null.
+#       skipA - кол-во нод до пересечения у А c B
+#       skipB - кол-во нод до пересечения у B c A
+
+# example1:
+# Input: intersectVal = 8, listA = [4,1,8,4,5], listB = [5,6,1,8,4,5], skipA = 2, skipB = 3
+# Output: Intersected at '8'
+
+# example2:
+# Input: intersectVal = 2, listA = [1,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1
+# Output: Intersected at '2'
+
+# 1) 🌶️ Complexity: Time: O(n + m), Memory O(1)
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+#
+# class Solution:
+#     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+#         # идея в том, чтобы сначала понять длину списка
+#         # после этого мы вычисляем разницу (diff)
+#         # и двигаем у большего списка diff нод
+#         # когда это произойдет - получатся два одинаковых по длине списка, которые пересекаются в какой-то точке
+#         # останется только двигать и искать совпадающую ноду
+#         # если такой не найдется просто вернуть None
+#
+#
+#         a = headA
+#         b = headB
+#
+#         a_len = 0
+#         b_len = 0
+#         while a.next:
+#             a_len += 1
+#             a = a.next
+#
+#         while b.next:
+#             b_len += 1
+#             b = b.next
+#
+#         a = headA
+#         b = headB
+#
+#         if a_len > b_len:
+#             for _ in range(a_len - b_len):
+#                 a = a.next
+#         if b_len > a_len:
+#             for _ in range(b_len - a_len):
+#                 b = b.next
+#
+#         while a and b:
+#             if a == b:
+#                 return a # or b
+#             a = a.next
+#             b = b.next
+#
+#         return None
+
+# 2) лучше (тк меньше итераций и кода меньше), сложность та же
+# class Solution:
+#     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+#         a, b = headA, headB
+#
+#         while a != b:
+#             a = a.next if a else headB
+#             b = b.next if b else headA
+#
+#         return a
+
+# разбор:
+# пример
+# A:              8 → 4 → 5 → null
+# B: 5 → 6 → 1 →  8 → 4 → 5 → null
+#                 ↑ пересечение (один и тот же узел 8)
+
+# шаг	 a	 b	 что случилось
+#  1     8   5     разные
+#  2     4   6
+#  3     5   1
+#  4     5   8     a кончился → и переключился на headB
+#  5     6   4     a уже по B, b ещё по B
+#  6     1   5
+#  7     8   8     b кончился → и переключился на headA → встретились
+
+# ----------------------------------------------------------------------------------------------------------------------#
