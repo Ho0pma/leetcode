@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from collections import Counter
 
 
@@ -337,3 +337,76 @@ from collections import Counter
 #
 # s = Solution()
 # print(s.isPalindrome(s="A man, a plan, a canal: Panama"))  # true 'amanaplanacanalpanama'
+
+# ----------------------------------------------------------------------------------------------------------------------#
+
+# 6. ☠️ 141. Linked List Cycle
+
+# task: подается односвязный список, есть указатели next и val
+#       pos в примере показывается только в качестве примера
+#       нужно узнать циклический это список или нет
+#       решается через идею алгоритма "заяц-черепаха"
+
+# Example 1:
+# Input: head = [3,2,0,-4], pos = 1
+# Output: true
+
+# Example 2:
+# Input: head = [1,2], pos = 0
+# Output: true
+
+# Example 3:
+# Input: head = [1], pos = -1
+# Output: false
+
+# 1) 🌶️ Complexity: Time: O(n), Memory O(1)
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+#
+# class Solution:
+#     def hasCycle(self, head: Optional[ListNode]) -> bool:
+#         # идея алгоритма: заяц-черепаха
+#         # один идет медленно (slow) - на одно деление вперед
+#         # другой быстро (fast) - на два деления вперед
+#         # если есть цикл - они гарантировано встречаются если шаг отличается на 1
+#         # тк при выходе обоих указателей на "цикл" - скорость их встречи равно 2 - 1
+#         # те расстояние между ними всегда сокращается на 1 шаг
+#         # те не возможности перепрыгнуть
+#         # если поставить разницу больше одного - возможен "перепрыг" f через s
+#
+#         slow = head
+#         fast = head
+#
+#         while fast and fast.next:
+#             slow = slow.next      # +1
+#             fast = fast.next.next # +2
+#
+#             if slow  == fast:
+#                 return True
+#
+#         return False
+#
+# # 1) пример с циклом
+# n1 = ListNode(3)
+# n2 = ListNode(2)
+# n3 = ListNode(0)
+# n4 = ListNode(-4)
+# n1.next = n2
+# n2.next = n3
+# n3.next = n4
+# n4.next = n2   # хвост указывает на n2 → цикл
+# head = n1
+#
+# # разбор
+# # 1 шаг: s и f оба на head те на 3
+# # 2 шаг: s = 2, f = 0
+# # 3 шаг: s = 0, f = 2
+# # 4 шаг: s = 4, f = 4  - те они только вот тут встретятся
+#
+# s = Solution()
+# print(s.hasCycle(head))
+
+# ----------------------------------------------------------------------------------------------------------------------#
