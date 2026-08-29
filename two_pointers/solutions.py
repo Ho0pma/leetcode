@@ -61,7 +61,7 @@ from collections import Counter
 # print(s.removeDuplicates([0, 1]))  # (2, [0, 1])
 # print(s.removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]))  # (5, [0, 1, 2, 3, 4, '_', '_', '_', '_', '_'])
 #
-#----------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------#
 
 # 2. ☠️ 27. Remove Element
 
@@ -128,7 +128,7 @@ from collections import Counter
 
 # ----------------------------------------------------------------------------------------------------------------------#
 
-# 3) 28. Find the Index of the First Occurrence in a String
+# 3) ☠️ 28. Find the Index of the First Occurrence in a String
 
 # task: подается строка1 (haystack) и строка2 (needle).
 #       нужно вернуть индекс первого сопоставления needle в haystack
@@ -181,6 +181,80 @@ from collections import Counter
 # #                        012345678910
 # print(s.strStr(haystack="mississippi", needle="issipi"))
 # print(s.strStr(haystack="a", needle="a"))
+
+# ----------------------------------------------------------------------------------------------------------------------#
+
+# 4. ☠️88. Merge Sorted Array
+
+# task: You are given two integer arrays nums1 and nums2, sorted in non-decreasing order
+#       and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
+#       Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+#       The final sorted array should not be returned by the function,
+#       but instead be stored inside the array nums1.
+#       To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that
+#       should be merged, and the last n elements are set to 0 and should be ignored. nums2 has a length of n.
+
+
+# example 1:
+# Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+# Output: [1,2,2,3,5,6]
+
+# example 2:
+# Input: nums1 = [1], m = 1, nums2 = [], n = 0
+# Output: [1]
+
+# example 3:
+# Input: nums1 = [0], m = 0, nums2 = [1], n = 1
+# Output: [1]
+
+# 1)  Complexity: Time: O(m + n), Memory O(1)
+# class Solution:
+#     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+#         i = m - 1
+#         j = n - 1
+#         # set three pointers: i - last OCCUPIED element in nums1, j - last OCCUPIED element in nums2
+#         #                       w - last element in nums1 (writer)
+#         # go through the array, check i and j, whichever is greater - put into nums1, decrement the index
+#         # when array j is finished - stop
+#         for w in range(n + m - 1, -1, -1):
+#             if j < 0:
+#                 break  # if nums2 is over
+#             if i >= 0 and nums1[i] > nums2[j]:
+#                 nums1[w] = nums1[i]
+#                 i -= 1
+#             else:
+#                 nums1[w] = nums2[j]
+#                 j -= 1
+#         # on task no need to return, but i need this for check output
+#         return nums1
+#
+#
+# s = Solution()
+# print(s.merge(nums1=[1, 2, 0], m=2, nums2=[2, 5, 6, 7], n=3)) # [1, 2, 2, 3, 5, 6]
+# print(s.merge(nums1=[1, 2, 3, 0, 0, 0], m=3, nums2=[2, 5, 6], n=3)) # [1, 2, 2, 3, 5, 6]
+# print(s.merge(nums1=[1], m=1, nums2=[], n=0)) # [1]
+# print(s.merge(nums1=[0], m=0, nums2=[1], n=1)) # [1]
+
+# 2) using python features
+# class Solution:
+#     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+#         # 1) Complexity: Time: O(m + n), Memory O(1)
+#         from heapq import merge
+#         nums1[:] = merge(nums1[:m], nums2[:n])
+#         return nums1
+#
+#         # 2) Complexity: Time: O((m + n) log(m + n)) из-за сортировки лог, Memory O(1)
+#         nums1[:] = nums1[:m] + nums2[:n]
+#         nums1.sort()
+#         return nums1
+#
+#         # 3) Complexity: Time: O((m + n) log(m + n)), Memory O(1)
+#         nums1[m:] = nums2[:n]
+#         nums1.sort()
+#         return nums1
+#
+# s = Solution()
+# print(s.merge(nums1=[1, 2, 3, 0, 0, 0], m=3, nums2=[2, 5, 6], n=3)) # [1, 2, 2, 3, 5, 6]
 
 # ----------------------------------------------------------------------------------------------------------------------#
 
