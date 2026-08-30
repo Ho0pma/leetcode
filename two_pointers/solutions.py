@@ -1,6 +1,8 @@
 from typing import List, Optional
 from collections import Counter
 
+from distlib.version import get_scheme
+
 
 # 1. ☠️ 26. Remove Duplicates from Sorted Array
 
@@ -500,5 +502,87 @@ from collections import Counter
 #  5     6   4     a уже по B, b ещё по B
 #  6     1   5
 #  7     8   8     b кончился → и переключился на headA → встретились
+
+# ----------------------------------------------------------------------------------------------------------------------#
+
+# 8. ☠️ 202. Happy Number
+
+# task: Write an algorithm to determine if a number n is happy.
+#       A happy number is a number defined by the following process:
+#       Starting with any positive integer, replace the number by the sum of the squares of its digits.
+#       Repeat the process until the number equals 1 (where it will stay),
+#       or it loops endlessly in a cycle which does not include 1.
+#       Those numbers for which this process ends in 1 are happy.
+#       Return true if n is a happy number, and false if not.
+
+# Example 1:
+# Input: n = 19
+# Output: true
+# Explanation:
+# 1^2 + 9^2 = 82
+# 8^2 + 2^2 = 68
+# 6^2 + 8^2 = 100
+# 1^2 + 0^2 + 0^2 = 1
+
+# Example 2:
+# Input: n = 2
+# Output: false # 4 → 16 → 37 → 58 → 89 → 145 → 42 → 20 → 4 → ...
+
+# 1) 🌶️ Complexity: Time: O(k · log n) k - чисел в цепочке, Memory O(1)
+# class Solution:
+#     def isHappy(self, n: int) -> bool:
+#         # алгоритм флойда
+#         # устанавливаем два указателя: slow и fast
+#         # для slow вычисляем следующие число
+#         # для fast проводим вычисление два раза
+#         # если fast станет = 1 - цикла нет, дойдет первым
+#         # если цикл есть - оба в какой-то момент зайдут в цикл и встретятся те станут равны - выводим false
+#
+#         def next_num(x: int) -> int:
+#             total = 0
+#             # хитрый способ: сначала вычисляем остаток - заносим в тотал
+#             # после делим исходное число, получая целое
+#             # таким образом число постепенно уменьшается и придет к нулю
+#             while x:
+#                 total += (x % 10) ** 2
+#                 x //= 10
+#             return total
+#         slow = n
+#         fast = next_num(n)
+#         while fast != 1 and slow != fast:
+#             slow = next_num(slow)
+#             fast = next_num(next_num(fast))
+#         return fast == 1
+#
+#
+# s = Solution()
+# print(s.isHappy(n=19)) # true
+# print(s.isHappy(n=4)) # false
+
+# 2) 🫑 using python features
+# Complexity: Time: O(k · log n), Memory O(k)
+# class Solution:
+#     def isHappy(self, n: int) -> bool:
+#         # вариант без двух указателей, а через хранение пройденных значений в сете
+#
+#         s = set()
+#
+#         while n != 1:
+#             if n in s:
+#                 return False
+#             s.add(n)
+#
+#             total = 0
+#             while n:
+#                 total += (n % 10) ** 2
+#                 n = n // 10
+#             n = total
+#
+#         return n == 1
+#
+#
+# s = Solution()
+# print(s.isHappy(n=19)) # true
+# print(s.isHappy(n=4)) # false
 
 # ----------------------------------------------------------------------------------------------------------------------#
