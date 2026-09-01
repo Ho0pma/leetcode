@@ -605,6 +605,7 @@ class ListNode:
         self.val = val
         self.next = next
 
+
 # 1) in-place
 # 🌶️ Complexity: Time: O(n), Memory O(1)
 # class Solution:
@@ -675,5 +676,58 @@ class ListNode:
 #             left = left.next
 #             right = right.prev
 #         return True
+
+# ----------------------------------------------------------------------------------------------------------------------#
+
+# 10. ☠️ 283. Move Zeroes
+
+# task: Given an integer array nums, move all 0's to the end of it
+#       while maintaining the relative order of the non-zero elements.
+#       Note that you must do this in-place without making a copy of the array.
+
+# Example 1:
+# Input: nums = [0,1,0,3,12]
+# Output: [1,3,12,0,0]
+
+# Example 2:
+# Input: nums = [0]
+# Output: [0]
+
+# 1) 🌶️ in-place
+# Complexity: Time: O(n), Memory O(1)
+class Solution:
+    # def moveZeroes(self, nums: List[int]) -> None:
+    #     # идем по списку
+    #     # если встречаем i != 0 - свапаем с j
+    #     j = 0
+    #     for i in range(len(nums)):
+    #         if nums[i] != 0:
+    #             nums[j], nums[i] = nums[i], nums[j]
+    #             j += 1
+    #
+    #     return nums
+
+    # def moveZeroes(self, nums: List[int]) -> None:
+    #     # без свапа
+    #     j = 0
+    #     for i in range(len(nums)):
+    #         if nums[i] != 0:
+    #             nums[j] = nums[i]
+    #             j += 1
+    #     for i in range(j, len(nums)):
+    #         nums[i] = 0
+    #
+    #     return nums
+
+# 2) 🫑 using python features
+# Complexity: Time: O(n), Memory O(n)
+#     def moveZeroes(self, nums: List[int]) -> None:
+#         nums.sort(key=lambda x: x == 0)
+#         return nums
+#
+# s = Solution()
+# print(s.moveZeroes(nums=[0, 1, 0, 3, 12]))
+# print(s.moveZeroes(nums=[0]))
+# print(s.moveZeroes(nums=[0, 0, 1]))
 
 # ----------------------------------------------------------------------------------------------------------------------#
