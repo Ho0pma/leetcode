@@ -586,3 +586,94 @@ from distlib.version import get_scheme
 # print(s.isHappy(n=4)) # false
 
 # ----------------------------------------------------------------------------------------------------------------------#
+
+# 9. ☠️ 234. Palindrome Linked List
+
+# task: Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+
+# Example 1:
+# Input: head = [1,2,2,1]
+# Output: true
+
+# Example 2:
+# Input: head = [1,2]
+# Output: false
+
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+# 1) in-place
+# 🌶️ Complexity: Time: O(n), Memory O(1)
+# class Solution:
+#     def isPalindrome(self, head: Optional[ListNode]) -> bool:
+#         if not head or not head.next:
+#             return True
+#         # 1) найти середину
+#         slow = head
+#         fast = head
+#         while fast and fast.next:
+#             slow = slow.next
+#             fast = fast.next.next
+#         # 2) развернуть вторую половину
+#         prev = None
+#         while slow:
+#             nxt = slow.next
+#             slow.next = prev
+#             prev = slow
+#             slow = nxt
+#         # prev — голова развернутой второй половины
+#         # 3) сравнить две половины
+#         left = head
+#         right = prev
+#         while right:
+#             if left.val != right.val:
+#                 return False
+#             left = left.next
+#             right = right.next
+#         return True
+
+# 2) 🫑 using python features
+# Complexity: Time: O(n), Memory O(n)
+# class Solution:
+#     def isPalindrome(self, head: Optional[ListNode]) -> bool:
+#         # если на память пофиг
+#         lst = []
+#         while head:
+#             lst.append(head.val)
+#             head = head.next
+#         return lst == lst[::-1]
+
+
+# 3) если бы можно было поменять структуру по заданию
+# class DoublyListNode:
+#     def __init__(self, val=0, prev=None, next=None):
+#         self.val = val
+#         self.prev = prev  # добавил обратный указатель
+#         self.next = next
+#
+# class Solution:
+#     def isPalindrome(self, head: DoublyListNode) -> bool:
+#         if not head:
+#             return True
+#
+#         # найти tail
+#         tail = head
+#         while tail.next:
+#             tail = tail.next
+#
+#         # два указателя
+#         left = head
+#         right = tail
+#         while left != right and left.prev != right:
+#             # можно еще добавить указатели проверки в while: left and right and..
+#             # это на случай если связный список битый
+#             if left.val != right.val:
+#                 return False
+#             left = left.next
+#             right = right.prev
+#         return True
+
+# ----------------------------------------------------------------------------------------------------------------------#
