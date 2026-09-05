@@ -952,7 +952,7 @@ class ListNode:
 # Output: false
 
 # 1) 🌶️ best approach
-# Complexity: Time: O(n + m), Memory O(n)
+# Complexity: Time: O(n + m), Memory O(1)
 # class Solution:
 #     def isSubsequence(self, s: str, t: str) -> bool:
 #         # нужно узнать является ли s подстрокой t
@@ -965,6 +965,21 @@ class ListNode:
 #                 i += 1
 #
 #         return i == len(s)
+#
+#
+# s = Solution()
+# print(s.isSubsequence(s="abc", t="ahbgdc"))
+# print(s.isSubsequence(s="axc", t="ahbgdc"))
+
+# 2) 🫑 using python features
+# Complexity: Time: O(n + m), Memory O(1)
+# class Solution:
+#     def isSubsequence(self, s: str, t: str) -> bool:
+#         # с помощью итератора мы сохраняем последовательность
+#         # тк он запоминает на чем остановился
+#         # те c in t_iter ищет дальше по t, не с начала каждый раз → порядок сохраняется.
+#         t_iter = iter(t)
+#         return all(c in t_iter for c in s)
 #
 #
 # s = Solution()
