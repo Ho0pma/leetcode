@@ -936,4 +936,41 @@ class ListNode:
 
 # ----------------------------------------------------------------------------------------------------------------------#
 
-# 15. ☠️
+# 15. ☠️ 392. Is Subsequence
+
+# task: Given two strings s and t, return true if s is a subsequence of t, or false otherwise.
+#       A subsequence of a string is a new string that is formed from the original string by deleting some
+#       (can be none) of the characters without disturbing the relative positions of the remaining characters.
+#       (i.e., "ace" is a subsequence of "abcde" while "aec" is not).
+
+# Example 1:
+# Input: s = "abc", t = "ahbgdc"
+# Output: true
+#
+# Example 2:
+# Input: s = "axc", t = "ahbgdc"
+# Output: false
+
+# 1) 🌶️ best approach
+# Complexity: Time: O(n + m), Memory O(n)
+# class Solution:
+#     def isSubsequence(self, s: str, t: str) -> bool:
+#         # нужно узнать является ли s подстрокой t
+#         # также нужно проверить сохраняется ли последовательность
+#         # (i.e., "ace" is a subsequence of "abcde" while "aec" is not)
+#
+#         i = 0
+#         for char in t:
+#             if i < len(s) and s[i] == char:
+#                 i += 1
+#
+#         return i == len(s)
+#
+#
+# s = Solution()
+# print(s.isSubsequence(s="abc", t="ahbgdc"))
+# print(s.isSubsequence(s="axc", t="ahbgdc"))
+
+# ----------------------------------------------------------------------------------------------------------------------#
+
+# 16.
