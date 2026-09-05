@@ -840,3 +840,49 @@ class ListNode:
 # print(s.reverseVowels(s="leetcode"))  # "leotcede"
 
 # ----------------------------------------------------------------------------------------------------------------------#
+
+# 13. ☠️ 349. Intersection of Two Arrays
+
+# task: Given two integer arrays nums1 and nums2, return an array of their intersection.
+#       Each element in the result must be unique and you may return the result in any order.
+
+# Example 1:
+# Input: nums1 = [1,2,2,1], nums2 = [2,2]
+# Output: [2]
+#
+# Example 2:
+# Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+# Output: [9,4]
+# Explanation: [4,9] is also accepted.
+
+# 1) 🌶️ best approach
+# Complexity: Time: O(n + m), Memory O(n + m)
+# class Solution:
+#     def intersection(self, nums1, nums2):
+#         set1 = set(nums1)
+#         result = []
+#         for x in nums2:
+#             if x in set1: # and seen[x] == 1: если добавить то что ниже
+#                 result.append(x)
+#                 set1.remove(x)  # или seen[x] = False — чтобы не дублировать
+#         return result
+#
+#
+# s = Solution()
+# print(s.intersection(nums1=[1, 2, 2, 1], nums2=[2, 2]))  # [2]
+# print(s.intersection(nums1=[4, 9, 5], nums2=[9, 4, 9, 8, 4]))  # [9,4]
+
+# 2) 🫑 using python features
+# Complexity: Time: O(n + m), Memory O(n + m)
+# class Solution:
+#     def intersection(self, nums1, nums2):
+#         return list(set(nums1).intersection(set(nums2)))
+#
+#
+# s = Solution()
+# print(s.intersection(nums1=[1, 2, 2, 1], nums2=[2, 2]))  # [2]
+# print(s.intersection(nums1=[4, 9, 5], nums2=[9, 4, 9, 8, 4]))  # [9,4]
+
+# ----------------------------------------------------------------------------------------------------------------------#
+
+# 14. ☠️
