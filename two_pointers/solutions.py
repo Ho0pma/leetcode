@@ -695,29 +695,29 @@ class ListNode:
 
 # 1) 🌶️ in-place
 # Complexity: Time: O(n), Memory O(1)
-class Solution:
-    # def moveZeroes(self, nums: List[int]) -> None:
-    #     # идем по списку
-    #     # если встречаем i != 0 - свапаем с j
-    #     j = 0
-    #     for i in range(len(nums)):
-    #         if nums[i] != 0:
-    #             nums[j], nums[i] = nums[i], nums[j]
-    #             j += 1
-    #
-    #     return nums
-
-    # def moveZeroes(self, nums: List[int]) -> None:
-    #     # без свапа
-    #     j = 0
-    #     for i in range(len(nums)):
-    #         if nums[i] != 0:
-    #             nums[j] = nums[i]
-    #             j += 1
-    #     for i in range(j, len(nums)):
-    #         nums[i] = 0
-    #
-    #     return nums
+# class Solution:
+#     def moveZeroes(self, nums: List[int]) -> None:
+#         # идем по списку
+#         # если встречаем i != 0 - свапаем с j
+#         j = 0
+#         for i in range(len(nums)):
+#             if nums[i] != 0:
+#                 nums[j], nums[i] = nums[i], nums[j]
+#                 j += 1
+#
+#         return nums
+#
+#     def moveZeroes(self, nums: List[int]) -> None:
+#         # без свапа
+#         j = 0
+#         for i in range(len(nums)):
+#             if nums[i] != 0:
+#                 nums[j] = nums[i]
+#                 j += 1
+#         for i in range(j, len(nums)):
+#             nums[i] = 0
+#
+#         return nums
 
 # 2) 🫑 using python features
 # Complexity: Time: O(n), Memory O(n)
@@ -729,5 +729,71 @@ class Solution:
 # print(s.moveZeroes(nums=[0, 1, 0, 3, 12]))
 # print(s.moveZeroes(nums=[0]))
 # print(s.moveZeroes(nums=[0, 0, 1]))
+
+# ----------------------------------------------------------------------------------------------------------------------#
+
+# 11. ☠️ 344. Reverse String
+
+# task: Write a function that reverses a string. The input string is given as an array of characters s.
+#       You must do this by modifying the input array in-place with O(1) extra memory.
+
+# Example 1
+# Input: s = ["h", "e", "l", "l", "o"]
+# Output: ["o", "l", "l", "e", "h"]
+
+# Example 2
+# Input: s = ["H", "a", "n", "n", "a", "h"]
+# Output: ["h", "a", "n", "n", "a", "H"]
+
+# 1) 🌶️ in-place
+# Complexity: Time: O(n), Memory O(1)
+class Solution:
+    def reverseString(self, s: List[str]) -> None:
+        # 1)
+        right = len(s) - 1
+        for left in range(len(s)):
+            if left >= right:
+                break
+            else:
+                s[left], s[right] = s[right], s[left]
+                right -= 1
+
+        # 2) более каноничный вариант
+        left, right = 0, len(s) - 1
+        while left < right:
+            s[left], s[right] = s[right], s[left]
+            left += 1
+            right -= 1
+
+        return s
+
+
+s = Solution()
+print(s.reverseString(s=["h", "e", "l", "l", "o"])) # ["o", "l", "l", "e", "h"]
+print(s.reverseString(s=["H", "a", "n", "n", "a", "h"])) # ["h", "a", "n", "n", "a", "H"]
+
+# 2) 🫑 using python features
+# Complexity: Time: O(n), Memory O(n)
+class Solution:
+    def reverseString(self, s: List[str]) -> None:
+        # s.reverse()   O(1) — меняет тот же список
+        # s[::-1]       O(n) — новый список
+        # reversed(s)   итератор, O(1), но нужно куда - то записать
+
+        # in-pace:
+        s = ["h", "e", "l", "l", "o"]
+        old_id = id(s)
+        s[:] = reversed(s)
+        print(s)  # ['o', 'l', 'l', 'e', 'h']
+        print(id(s) == old_id)  # True
+
+        # non in-pace:
+        s = reversed(s)  # s — уже другой объект (итератор)
+        s = s[::-1]  # новый список
+
+
+s = Solution()
+print(s.reverseString(s=["h", "e", "l", "l", "o"])) # ["o", "l", "l", "e", "h"]
+print(s.reverseString(s=["H", "a", "n", "n", "a", "h"])) # ["h", "a", "n", "n", "a", "H"]
 
 # ----------------------------------------------------------------------------------------------------------------------#
